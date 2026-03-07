@@ -1,0 +1,44 @@
+{
+  "name": "إنتاج+",
+  "short_name": "إنتاج+",
+  "description": "تطبيق إنتاجية ذكية — مهام، عادات، أهداف، Pomodoro وخدمتي",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "intaj-plus-app",
+  "display": "standalone",
+  "background_color": "#f5f7f6",
+  "theme_color": "#2d6a4f",
+  "dir": "rtl",
+  "lang": "ar",
+  "orientation": "portrait-primary",
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
