@@ -362,12 +362,40 @@ body.dark .n-y{background:#2a2510}body.dark .n-g{background:#0f2a1a}body.dark .n
 .note-add-btn{border:2px dashed var(--border);background:none;border-radius:14px;padding:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--text3);font-family:inherit;font-size:12px;font-weight:700;transition:.2s;min-height:130px;width:100%}
 .note-add-btn:hover{border-color:var(--p2);color:var(--p);background:var(--p-ll)}
 
-@media(max-width:600px){
-  main{padding:12px}
-  header{padding:0 12px}
-  .pomo-ring{width:170px;height:170px}
-  .pomo-time{font-size:38px}
-}
+/* ══ LANGUES ══ */
+.lang-hero{border-radius:var(--r);padding:20px;margin-bottom:16px;color:#fff;position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.lang-hero.fr{background:linear-gradient(135deg,#003189,#0055b3,#ed2939)}
+.lang-hero.en{background:linear-gradient(135deg,#012169,#c8102e,#ffffff22)}
+.lang-hero-flag{position:absolute;left:-10px;bottom:-10px;font-size:80px;opacity:.15}
+.lang-sel{display:flex;gap:8px;margin-bottom:16px}
+.lang-sel-btn{flex:1;padding:12px;border:2px solid var(--border);border-radius:12px;background:var(--bg2);font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center;gap:8px}
+.lang-sel-btn.active.fr{border-color:#0055b3;background:#e8f0ff;color:#003189}
+.lang-sel-btn.active.en{border-color:#c8102e;background:#fff0f1;color:#8b0000}
+body.dark .lang-sel-btn.active.fr{background:rgba(0,85,179,.2)}
+body.dark .lang-sel-btn.active.en{background:rgba(200,16,46,.2)}
+/* Pomodoro lang */
+.lpomo-sessions{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;justify-content:center}
+.lpomo-sess-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg3);font-family:inherit;font-size:11px;font-weight:800;cursor:pointer;color:var(--text2);transition:.2s}
+.lpomo-sess-btn.on{background:var(--p);color:#fff;border-color:var(--p)}
+/* Vocabulary */
+.vocab-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:.2s;animation:slideIn .2s ease}
+.vocab-card:hover{border-color:var(--p2);box-shadow:0 3px 12px rgba(45,106,79,.1)}
+.vocab-word{font-size:16px;font-weight:900;flex:1}
+.vocab-trans{font-size:13px;color:var(--text2);flex:1}
+.vocab-lang-badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800}
+.vb-fr{background:#e8f0ff;color:#003189}
+.vb-en{background:#fff0f1;color:#8b0000}
+/* Flashcard quiz */
+.flashcard{background:var(--bg2);border:2px solid var(--border);border-radius:20px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.4s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow);padding:24px;text-align:center;position:relative;overflow:hidden;user-select:none}
+.flashcard:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(45,106,79,.15)}
+.flashcard.flip{border-color:var(--p);background:var(--p-ll)}
+.fc-hint{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.fc-word{font-size:28px;font-weight:900;color:var(--text)}
+.fc-sub{font-size:13px;color:var(--text2);margin-top:6px}
+.fc-tap{font-size:11px;color:var(--text3);margin-top:12px}
+/* Progress lang */
+.lang-prog-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.lang-prog-icon{font-size:20px;width:32px;text-align:center}
 </style>
 </head>
 <body class="lang-ar">
@@ -453,9 +481,10 @@ body.dark .n-y{background:#2a2510}body.dark .n-g{background:#0f2a1a}body.dark .n
   <div class="nav-tab active" onclick="showTab('dashboard')">🏠 <span class="t" data-ar="الرئيسية" data-fr="Accueil" data-en="Home">الرئيسية</span></div>
   <div class="nav-tab" onclick="showTab('tasks')">✅ <span class="t" data-ar="المهام" data-fr="Tâches" data-en="Tasks">المهام</span></div>
   <div class="nav-tab" onclick="showTab('notes')">📝 <span class="t" data-ar="النوتات" data-fr="Notes" data-en="Notes">النوتات</span></div>
-  <div class="nav-tab" onclick="showTab('pomodoro')">⏱️ Pomodoro</div>
+  <div class="nav-tab" onclick="showTab('langues')">🌍 اللغات</div>
   <div class="nav-tab" onclick="showTab('stats')">📊 <span class="t" data-ar="إحصائيات" data-fr="Stats" data-en="Stats">إحصائيات</span></div>
   <div class="nav-tab" onclick="showTab('khedmati')">🎖️ <span class="t" data-ar="خدمتي" data-fr="Service" data-en="My Work">خدمتي</span></div>
+  <div class="nav-tab" onclick="showTab('settings')">⚙️ <span class="t" data-ar="الإعدادات" data-fr="Paramètres" data-en="Settings">الإعدادات</span></div>
 </nav>
 
 <main>
@@ -671,13 +700,28 @@ body.dark .n-y{background:#2a2510}body.dark .n-g{background:#0f2a1a}body.dark .n
 
   <!-- KH LEAVES -->
   <div id="kh-leaves" style="display:none">
+    <!-- إعداد الأرصدة -->
+    <div class="panel" style="margin-bottom:14px">
+      <div class="ph" style="cursor:pointer" onclick="toggleLeaveSetup()">
+        ⚙️ إعداد أرصدة الإجازات
+        <span id="leave-setup-toggle" style="margin-right:auto;font-size:11px;color:var(--text3)">▼ فتح</span>
+      </div>
+      <div id="leave-setup-body" style="display:none">
+        <div class="pb">
+          <p style="font-size:12px;color:var(--text2);margin-bottom:14px">حدد شحال من يوم مخصص لك في كل نوع إجازة حسب وضعيتك الإدارية.</p>
+          <div class="fr" id="leave-quotas-form"></div>
+          <button class="btn btn-p btn-sm" onclick="saveLeaveQuotas()">💾 حفظ الأرصدة</button>
+        </div>
+      </div>
+    </div>
+
     <div class="panel"><div class="ph">➕ تسجيل إجازة</div>
       <div class="pb">
         <div class="fr">
           <div class="fg"><label class="lbl">النوع</label>
             <select class="inp" id="kv-type">
               <option value="conge">🌴 كونجي</option><option value="rubo">🤒 روبو</option>
-              <option value="special">🎁 خاصة</option><option value="admin">📋 إدارية</option><option value="tashil">🏃 تسهيل</option>
+              <option value="special">🎁 خاصة</option><option value="admin">📋 إدارية</option>
             </select>
           </div>
           <div class="fg"><label class="lbl">من</label><input class="inp" type="date" id="kv-from"/></div>
@@ -703,6 +747,200 @@ body.dark .n-y{background:#2a2510}body.dark .n-g{background:#0f2a1a}body.dark .n
       <div class="panel"><div class="ph">📅 أنواع الخدمة</div><div class="pb" id="kh-breakdown"></div></div>
     </div>
     <div class="panel"><div class="ph">🏆 إنجازات</div><div class="pb" id="kh-ach"></div></div>
+  </div>
+</div>
+
+<!-- ══ LANGUES ══ -->
+<div id="sec-langues" class="sec">
+
+  <!-- Language selector -->
+  <div class="lang-sel">
+    <button class="lang-sel-btn active fr" id="lbtn-fr" onclick="langSwitch('fr')">🇫🇷 Français</button>
+    <button class="lang-sel-btn en" id="lbtn-en" onclick="langSwitch('en')">🇬🇧 English</button>
+  </div>
+
+  <!-- Sub tabs -->
+  <div class="sub-tabs" id="lang-subtabs">
+    <button class="sub-tab active" onclick="switchLangTab('timer',this)">⏱️ التايمر</button>
+    <button class="sub-tab" onclick="switchLangTab('stats',this)">📊 الإحصائيات</button>
+    <button class="sub-tab" onclick="switchLangTab('goals',this)">🎯 الأهداف</button>
+  </div>
+
+  <!-- ── TIMER TAB ── -->
+  <div id="lt-timer">
+    <!-- Hero card -->
+    <div class="lang-hero fr" id="lang-hero">
+      <div class="lang-hero-flag" id="lang-hero-flag">🇫🇷</div>
+      <div style="font-size:11px;font-weight:700;opacity:.7;letter-spacing:.5px;margin-bottom:6px" id="lang-hero-lbl">FRANÇAIS — وقت الدراسة</div>
+      <div style="font-size:22px;font-weight:900" id="lang-hero-session">📖 قراءة</div>
+      <div style="font-size:12px;opacity:.8;margin-top:4px" id="lang-hero-stats-txt">جلسات اليوم: 0</div>
+    </div>
+
+    <!-- Session type -->
+    <div class="lpomo-sessions" id="lang-sess-types">
+      <button class="lpomo-sess-btn on" onclick="langSetSession('read',this)">📖 قراءة</button>
+      <button class="lpomo-sess-btn" onclick="langSetSession('listen',this)">🎧 استماع</button>
+      <button class="lpomo-sess-btn" onclick="langSetSession('speak',this)">🗣️ محادثة</button>
+      <button class="lpomo-sess-btn" onclick="langSetSession('write',this)">✍️ كتابة</button>
+      <button class="lpomo-sess-btn" onclick="langSetSession('revision',this)">🔄 مراجعة</button>
+    </div>
+
+    <!-- Pomodoro ring -->
+    <div class="pomo-wrap" style="padding:10px 0">
+      <div class="pomo-ring" id="langPomoRing">
+        <div class="pomo-time" id="langPomoTime">25:00</div>
+        <div class="pomo-label" id="langPomoLabel">تركيز</div>
+      </div>
+      <div class="pomo-dots" id="langPomoDots"></div>
+      <div class="pomo-btns">
+        <button class="btn btn-p" id="langPomoBtn" onclick="langPomoToggle()">▶ ابدأ</button>
+        <button class="btn btn-ghost" onclick="langPomoReset()">↺ إعادة</button>
+        <button class="btn btn-ghost" onclick="langPomoSkip()">⏭ تخطي</button>
+      </div>
+      <div class="pomo-set">
+        <div class="pset">⏱️ <input type="number" id="lpw" value="25" min="1" max="90" onchange="langPomoSetupUpdate()"/> دق تركيز</div>
+        <div class="pset">☕ <input type="number" id="lpb" value="5" min="1" max="30" onchange="langPomoSetupUpdate()"/> دق راحة</div>
+        <div class="pset">🔄 <input type="number" id="lps" value="4" min="1" max="8" onchange="langPomoSetupUpdate()"/> جلسات</div>
+      </div>
+    </div>
+
+    <!-- Today quick stats -->
+    <div class="panel"><div class="ph">📊 إحصائيات اليوم</div>
+      <div class="pb"><div class="cards-row" id="lang-today-stats"></div></div>
+    </div>
+  </div>
+
+  <!-- ── STATS TAB ── -->
+  <div id="lt-stats" style="display:none">
+    <!-- Total cards -->
+    <div class="cards-row" id="lang-stat-cards" style="margin-bottom:14px"></div>
+
+    <!-- 7 day chart -->
+    <div class="panel" style="margin-bottom:14px">
+      <div class="ph">📅 دقائق الدراسة — 7 أيام</div>
+      <div class="pb"><div class="bar-chart" id="lang-chart"></div></div>
+    </div>
+
+    <!-- Session type breakdown -->
+    <div class="g2">
+      <div class="panel"><div class="ph">🇫🇷 تفصيل جلسات الفرنسية</div><div class="pb" id="lang-fr-breakdown"></div></div>
+      <div class="panel"><div class="ph">🇬🇧 تفصيل جلسات الإنجليزية</div><div class="pb" id="lang-en-breakdown"></div></div>
+    </div>
+
+    <!-- Session log -->
+    <div class="panel" style="margin-top:14px">
+      <div class="ph">📋 سجل الجلسات الأخيرة</div>
+      <div class="pb" id="lang-session-log"></div>
+    </div>
+  </div>
+
+  <!-- ── GOALS TAB ── -->
+  <div id="lt-goals" style="display:none">
+    <!-- Progress to goal -->
+    <div id="lang-goals-area"></div>
+
+    <!-- Set goals -->
+    <div class="panel">
+      <div class="ph">✏️ تحديد الأهداف الأسبوعية</div>
+      <div class="pb">
+        <div class="fr">
+          <div class="fg">
+            <label class="lbl">🇫🇷 هدف الفرنسية (دقيقة/أسبوع)</label>
+            <input class="inp" type="number" id="goal-fr" placeholder="مثال: 150" min="0"/>
+          </div>
+          <div class="fg">
+            <label class="lbl">🇬🇧 هدف الإنجليزية (دقيقة/أسبوع)</label>
+            <input class="inp" type="number" id="goal-en" placeholder="مثال: 150" min="0"/>
+          </div>
+        </div>
+        <button class="btn btn-p" onclick="langSaveGoals()">💾 حفظ الأهداف</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SETTINGS ══ -->
+<div id="sec-settings" class="sec">
+  <div class="sec-title">⚙️ الإعدادات والنسخ الاحتياطي</div>
+
+  <div class="panel" style="margin-bottom:14px">
+    <div class="ph">💾 تصدير النسخة الاحتياطية</div>
+    <div class="pb">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7">
+        حمّل ملف JSON يحتوي على <strong>كل بياناتك</strong>: المهام، العادات، الأهداف، النوتات، سجل الخدمة والإجازات. احفظه في مكان آمن وارجع إليه متى شئت.
+      </p>
+      <button class="btn btn-p" onclick="settingsExport()">📥 تحميل النسخة الاحتياطية</button>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:14px">
+    <div class="ph">📤 استرجاع بيانات سابقة</div>
+    <div class="pb">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7">
+        اختر ملف النسخة الاحتياطية (.json) اللي حملتيه سابقاً لاسترجاع كل بياناتك.
+        <strong style="color:var(--red)">⚠️ هادا غادي يبدل البيانات الحالية.</strong>
+      </p>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <label class="btn btn-ghost" style="cursor:pointer">
+          📂 اختار ملف JSON
+          <input type="file" id="restore-file" accept=".json" style="display:none" onchange="settingsImport(this)"/>
+        </label>
+        <span id="restore-filename" style="font-size:12px;color:var(--text3)">لم يُختر ملف</span>
+      </div>
+      <div id="restore-preview" style="display:none;margin-top:14px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:14px">
+        <div style="font-size:13px;font-weight:800;color:var(--p);margin-bottom:10px">📋 ما يحتويه الملف:</div>
+        <div id="restore-preview-content" class="cards-row"></div>
+        <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+          <button class="btn btn-p" onclick="settingsConfirmRestore()">✅ تأكيد الاسترجاع</button>
+          <button class="btn btn-ghost" onclick="settingsCancelRestore()">❌ إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:14px">
+    <div class="ph">🎨 تفضيلات العرض</div>
+    <div class="pb">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div>
+          <div style="font-size:13px;font-weight:800">🌙 الوضع الليلي</div>
+          <div style="font-size:11px;color:var(--text3)">تفعيل أو تعطيل الوضع الليلي</div>
+        </div>
+        <button class="theme-btn" onclick="toggleDark()" style="margin:0"></button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+        <div>
+          <div style="font-size:13px;font-weight:800">🌐 اللغة</div>
+          <div style="font-size:11px;color:var(--text3)">اختر لغة التطبيق</div>
+        </div>
+        <div class="lang-btns">
+          <button class="lang-btn" onclick="setLang('ar')">ع</button>
+          <button class="lang-btn" onclick="setLang('fr')">Fr</button>
+          <button class="lang-btn" onclick="setLang('en')">En</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="border-color:var(--red);margin-bottom:14px">
+    <div class="ph" style="color:var(--red);background:var(--red-l)">⚠️ منطقة الخطر</div>
+    <div class="pb">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.7">
+        مسح جميع البيانات نهائياً. هاد العملية <strong style="color:var(--red)">لا يمكن التراجع عنها</strong>. ننصح بتحميل نسخة احتياطية أولاً.
+      </p>
+      <button class="btn btn-red" onclick="settingsClearAll()">🗑️ مسح كل البيانات</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="ph">ℹ️ معلومات التطبيق</div>
+    <div class="pb" style="font-size:13px;color:var(--text2);line-height:2.2">
+      <div>📱 <strong>إنتاج+</strong> — تطبيق إنتاجية ذكية</div>
+      <div>💾 التخزين: localStorage (محلي في المتصفح)</div>
+      <div>🔒 بياناتك خاصة ولا تُرسل لأي خادم</div>
+      <div id="settings-storage-info" style="margin-top:8px;background:var(--bg3);border-radius:8px;padding:8px 12px;font-size:12px"></div>
+    </div>
   </div>
 </div>
 
@@ -766,7 +1004,7 @@ function showTab(name){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   const sec=document.getElementById('sec-'+name);
   if(sec)sec.classList.add('active');
-  const tabs=['dashboard','tasks','notes','pomodoro','stats','khedmati'];
+  const tabs=['dashboard','tasks','notes','langues','stats','khedmati','settings'];
   const i=tabs.indexOf(name);
   if(i>=0)document.querySelectorAll('.nav-tab')[i].classList.add('active');
   if(name==='dashboard')renderDashboard();
@@ -774,6 +1012,8 @@ function showTab(name){
   if(name==='notes')renderNotes();
   if(name==='stats')renderStats();
   if(name==='khedmati')initKhedmati();
+  if(name==='settings')initSettings();
+  if(name==='langues')initLangues();
 }
 
 function switchTaskTab(tab,btn){
@@ -941,6 +1181,7 @@ function loadData(){
   eventsData = load('events', []);
   khLog      = load('kh_log',    []);
   khLeaves   = load('kh_leaves', []);
+  vocabData  = load('lang_vocab', []);
 }
 
 // ══════════════════════════════════════════
@@ -1335,11 +1576,27 @@ function renderDashboard(){
 const KH_MONTHS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'];
 const KH_DAYS=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const KH_TYPE={normal:{n:'خدمة عادية',i:'☀️'},night:{n:'خدمة ليلية',i:'🌙'},mission:{n:'مأمورية',i:'🚗'},absence:{n:'غياب',i:'😷'}};
-const KH_LEAVE={conge:{n:'كونجي سنوي',i:'🌴',t:30},rubo:{n:'روبو (مرضي)',i:'🤒',t:180},special:{n:'إجازة خاصة',i:'🎁',t:6},admin:{n:'إجازة إدارية',i:'📋',t:10},tashil:{n:'تسهيل مأموري',i:'🏃',t:12}};
+const KH_LEAVE={conge:{n:'كونجي سنوي',i:'🌴',t:22,noWeekend:true},rubo:{n:'روبو (مرضي)',i:'🤒',t:null},special:{n:'إجازة خاصة',i:'🎁',t:10},admin:{n:'إجازة إدارية',i:'📋',t:10}};
 
 function fmtH(h){const hr=Math.floor(h);const m=Math.round((h-hr)*60);return hr+'س'+(m>0?' '+m+'د':'');}
 function khHours(i,o){if(!i||!o)return 0;const[ih,im]=i.split(':').map(Number);const[oh,om]=o.split(':').map(Number);return Math.max(0,((oh*60+om)-(ih*60+im))/60);}
 function daysBetween(a,b){return Math.max(1,Math.round((new Date(b)-new Date(a))/864e5)+1);}
+
+// العطل الرسمية المغربية (شهر-يوم)
+const MA_HOLIDAYS=['01-01','01-11','05-01','07-30','08-14','08-20','11-06','11-18'];
+
+function workingDaysBetween(a,b){
+  let count=0;
+  const cur=new Date(a);
+  const end=new Date(b);
+  while(cur<=end){
+    const dow=cur.getDay(); // 0=أحد, 6=سبت
+    const md=String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');
+    if(dow!==6 && !MA_HOLIDAYS.includes(md)) count++;
+    cur.setDate(cur.getDate()+1);
+  }
+  return Math.max(1,count);
+}
 function khMonthStr(d=new Date()){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;}
 
 function initKhedmati(){
@@ -1598,7 +1855,7 @@ function khAddLeave(){
   const to=document.getElementById('kv-to').value;
   if(!from||!to){toast('⚠️ اختر التواريخ!');return;}
   if(from>to){toast('⚠️ التاريخ غلط!');return;}
-  const days=daysBetween(from,to);
+  const days = type==='conge' ? workingDaysBetween(from,to) : daysBetween(from,to);
   khLeaves.push({id:Date.now(),type,from,to,days,note:document.getElementById('kv-note').value.trim()});
   khLeaves.sort((a,b)=>b.from.localeCompare(a.from));
   save('kh_leaves',khLeaves);
@@ -1612,12 +1869,24 @@ function khRenderBalance(id){
   const el=document.getElementById(id);if(!el)return;
   el.innerHTML=Object.entries(KH_LEAVE).map(([type,info])=>{
     const used=khLeaves.filter(l=>l.type===type).reduce((s,l)=>s+l.days,0);
+    if(info.t===null){
+      // روبو: بلا سقف
+      return `<div class="lp-card">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-weight:800;font-size:12px">${info.i} ${info.n}</span>
+          <span style="font-size:12px;font-weight:700;color:var(--text3)">حسب الشهادة</span>
+        </div>
+        <div class="prog-lbl"><span>مستعمل: ${used} يوم</span><span style="color:var(--text3)">∞ بلا سقف</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:100%;background:var(--blue)"></div></div>
+      </div>`;
+    }
     const rem=Math.max(0,info.t-used);
     const pct=Math.min(100,Math.round(used/info.t*100));
     const col=pct>80?'var(--red)':pct>50?'var(--orange)':'var(--p)';
+    const note=info.noWeekend?'<span style="font-size:9px;color:var(--text3);margin-right:4px">(السبت والعطل غير محسوبة)</span>':'';
     return `<div class="lp-card">
       <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-        <span style="font-weight:800;font-size:12px">${info.i} ${info.n}</span>
+        <span style="font-weight:800;font-size:12px">${info.i} ${info.n}${note}</span>
         <span style="font-size:18px;font-weight:900;color:${col}">${rem}</span>
       </div>
       <div class="prog-lbl"><span>مستعمل: ${used}</span><span>متبقي: ${rem}/${info.t}</span></div>
@@ -1707,6 +1976,423 @@ function khCalcStreak(){
     mx=Math.max(mx,cur);prev=e.date;
   });
   return mx;
+}
+
+// ══════════════════════════════════════════
+//  LANGUES — إدارة وقت تعلم اللغات
+// ══════════════════════════════════════════
+let curLang2='fr';
+let lpWork=25,lpBreak=5,lpSess=4,lpCurSess=1,lpIsBreak=false,lpRunning=false,lpLeft=25*60,lpTimer=null;
+let lpSessionType='read';
+const LANG_SESS={read:{n:'قراءة',i:'📖'},listen:{n:'استماع',i:'🎧'},speak:{n:'محادثة',i:'🗣️'},write:{n:'كتابة',i:'✍️'},revision:{n:'مراجعة',i:'🔄'}};
+
+function initLangues(){
+  langUpdateHero();
+  langRenderTodayStats();
+  langRenderPomoDots();
+}
+
+function langSwitch(l){
+  curLang2=l;
+  document.getElementById('lbtn-fr').className='lang-sel-btn'+(l==='fr'?' active fr':' fr');
+  document.getElementById('lbtn-en').className='lang-sel-btn'+(l==='en'?' active en':' en');
+  langUpdateHero();
+  langRenderTodayStats();
+}
+
+function langUpdateHero(){
+  const hero=document.getElementById('lang-hero');
+  const flag=document.getElementById('lang-hero-flag');
+  const lbl=document.getElementById('lang-hero-lbl');
+  if(!hero)return;
+  hero.className='lang-hero '+curLang2;
+  flag.textContent=curLang2==='fr'?'🇫🇷':'🇬🇧';
+  lbl.textContent=(curLang2==='fr'?'FRANÇAIS':'ENGLISH')+' — وقت الدراسة';
+  const key='ip_lang_pomo_'+curLang2+'_'+TODAY;
+  const s=JSON.parse(localStorage.getItem(key)||'{"sessions":0,"minutes":0}');
+  document.getElementById('lang-hero-stats-txt').textContent=`جلسات اليوم: ${s.sessions} | ${s.minutes||0} دقيقة`;
+}
+
+function switchLangTab(tab,btn){
+  document.querySelectorAll('#lang-subtabs .sub-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  ['timer','stats','goals'].forEach(t=>{
+    const el=document.getElementById('lt-'+t);
+    if(el)el.style.display=t===tab?'block':'none';
+  });
+  if(tab==='stats')langRenderStats2();
+  if(tab==='goals')langRenderGoals();
+}
+
+// ── POMODORO ──
+function langPomoSetupUpdate(){
+  lpWork=parseInt(document.getElementById('lpw').value)||25;
+  lpBreak=parseInt(document.getElementById('lpb').value)||5;
+  lpSess=parseInt(document.getElementById('lps').value)||4;
+  if(!lpRunning)langPomoReset();
+  langRenderPomoDots();
+}
+
+function langSetSession(type,btn){
+  lpSessionType=type;
+  document.querySelectorAll('.lpomo-sess-btn').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  const s=LANG_SESS[type];
+  document.getElementById('lang-hero-session').textContent=s.i+' '+s.n;
+}
+
+function langPomoToggle(){
+  if(lpRunning){clearInterval(lpTimer);lpRunning=false;}
+  else{lpRunning=true;lpTimer=setInterval(langPomoTick,1000);}
+  document.getElementById('langPomoRing').className='pomo-ring'+(lpRunning?' running':'')+(lpIsBreak?' brk':'');
+  document.getElementById('langPomoBtn').innerHTML=lpRunning?'⏸ إيقاف':'▶ ابدأ';
+}
+
+function langPomoTick(){
+  if(lpLeft>0){lpLeft--;}
+  else{
+    if(!lpIsBreak){
+      // save session
+      const key='ip_lang_pomo_'+curLang2+'_'+TODAY;
+      const s=JSON.parse(localStorage.getItem(key)||'{"sessions":0,"minutes":0,"types":{}}');
+      s.sessions++;s.minutes=(s.minutes||0)+lpWork;
+      s.types=s.types||{};s.types[lpSessionType]=(s.types[lpSessionType]||0)+lpWork;
+      localStorage.setItem(key,JSON.stringify(s));
+      // save to session log
+      const logKey='ip_lang_log';
+      const log=JSON.parse(localStorage.getItem(logKey)||'[]');
+      log.unshift({lang:curLang2,type:lpSessionType,minutes:lpWork,date:TODAY,ts:Date.now()});
+      if(log.length>100)log.pop();
+      localStorage.setItem(logKey,JSON.stringify(log));
+      langUpdateHero();langRenderTodayStats();
+      if(lpCurSess>=lpSess){langPomoReset();toast('🎉 أنهيت جميع الجلسات!');return;}
+      lpCurSess++;lpIsBreak=true;lpLeft=lpBreak*60;toast('☕ راحة!');
+    } else {lpIsBreak=false;lpLeft=lpWork*60;toast('📚 ارجع للدراسة!');}
+    langRenderPomoDots();
+    document.getElementById('langPomoRing').className='pomo-ring running'+(lpIsBreak?' brk':'');
+  }
+  const m=String(Math.floor(lpLeft/60)).padStart(2,'0'),s2=String(lpLeft%60).padStart(2,'0');
+  document.getElementById('langPomoTime').textContent=m+':'+s2;
+  document.getElementById('langPomoLabel').textContent=lpIsBreak?'راحة':'تركيز';
+}
+
+function langPomoReset(){
+  clearInterval(lpTimer);lpRunning=false;lpIsBreak=false;lpLeft=lpWork*60;lpCurSess=1;
+  document.getElementById('langPomoTime').textContent=String(lpWork).padStart(2,'0')+':00';
+  document.getElementById('langPomoLabel').textContent='تركيز';
+  document.getElementById('langPomoBtn').innerHTML='▶ ابدأ';
+  document.getElementById('langPomoRing').className='pomo-ring';
+  langRenderPomoDots();
+}
+
+function langPomoSkip(){
+  if(lpIsBreak){lpIsBreak=false;lpLeft=lpWork*60;}
+  else{lpCurSess=Math.min(lpCurSess+1,lpSess);lpIsBreak=true;lpLeft=lpBreak*60;}
+  langRenderPomoDots();
+  document.getElementById('langPomoRing').className='pomo-ring running'+(lpIsBreak?' brk':'');
+}
+
+function langRenderPomoDots(){
+  const el=document.getElementById('langPomoDots');if(!el)return;
+  let h='';
+  for(let i=0;i<lpSess;i++){
+    const cls=i<lpCurSess-1?'pomo-dot done':i===lpCurSess-1&&!lpIsBreak?'pomo-dot cur':'pomo-dot';
+    h+=`<div class="${cls}"></div>`;
+  }
+  el.innerHTML=h;
+}
+
+function langRenderTodayStats(){
+  const el=document.getElementById('lang-today-stats');if(!el)return;
+  const fr=JSON.parse(localStorage.getItem('ip_lang_pomo_fr_'+TODAY)||'{"sessions":0,"minutes":0}');
+  const en=JSON.parse(localStorage.getItem('ip_lang_pomo_en_'+TODAY)||'{"sessions":0,"minutes":0}');
+  const total=(fr.minutes||0)+(en.minutes||0);
+  el.innerHTML=`
+    <div class="stat-card hl"><div class="stat-num" style="color:var(--p)">${total}</div><div class="stat-lbl">إجمالي دقائق</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#003189">${fr.minutes||0}</div><div class="stat-lbl">🇫🇷 دقيقة</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#c8102e">${en.minutes||0}</div><div class="stat-lbl">🇬🇧 دقيقة</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--orange)">${fr.sessions+en.sessions}</div><div class="stat-lbl">جلسات اليوم</div></div>
+  `;
+}
+
+// ── STATS ──
+function langRenderStats2(){
+  // totals for last 30 days
+  let frTotal=0,enTotal=0,frSess=0,enSess=0;
+  for(let i=0;i<30;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const ds=d.toISOString().split('T')[0];
+    const fr=JSON.parse(localStorage.getItem('ip_lang_pomo_fr_'+ds)||'{"sessions":0,"minutes":0}');
+    const en=JSON.parse(localStorage.getItem('ip_lang_pomo_en_'+ds)||'{"sessions":0,"minutes":0}');
+    frTotal+=(fr.minutes||0);enTotal+=(en.minutes||0);
+    frSess+=fr.sessions||0;enSess+=en.sessions||0;
+  }
+  const cards=document.getElementById('lang-stat-cards');
+  if(cards)cards.innerHTML=`
+    <div class="stat-card hl"><div class="stat-num" style="color:var(--p)">${frTotal+enTotal}</div><div class="stat-lbl">دقيقة (30 يوم)</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#003189">${frTotal}</div><div class="stat-lbl">🇫🇷 دقيقة</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#c8102e">${enTotal}</div><div class="stat-lbl">🇬🇧 دقيقة</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--orange)">${frSess+enSess}</div><div class="stat-lbl">جلسات</div></div>
+  `;
+
+  // 7 day chart
+  const days7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days7.push(d);}
+  const dayNms=['أح','إث','ث','أر','خ','ج','س'];
+  const ch=document.getElementById('lang-chart');
+  if(ch){
+    const vals=days7.map(d=>{
+      const ds=d.toISOString().split('T')[0];
+      const fr=JSON.parse(localStorage.getItem('ip_lang_pomo_fr_'+ds)||'{"minutes":0}');
+      const en=JSON.parse(localStorage.getItem('ip_lang_pomo_en_'+ds)||'{"minutes":0}');
+      return (fr.minutes||0)+(en.minutes||0);
+    });
+    const mx=Math.max(...vals,1);
+    ch.innerHTML=days7.map((d,i)=>{
+      const h=Math.max(4,Math.round(vals[i]/mx*95));
+      const isT=i===6;
+      return `<div class="bar-item">
+        <div class="bar-val">${vals[i]}</div>
+        <div class="bar-fill" style="height:${h}px;background:${isT?'var(--p)':'var(--p3)'}"></div>
+        <div class="bar-lbl" style="${isT?'color:var(--p);font-weight:900':''}">${dayNms[d.getDay()]}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // session type breakdown
+  langBreakdown('fr',document.getElementById('lang-fr-breakdown'));
+  langBreakdown('en',document.getElementById('lang-en-breakdown'));
+
+  // session log
+  const log=JSON.parse(localStorage.getItem('ip_lang_log')||'[]');
+  const logEl=document.getElementById('lang-session-log');
+  if(logEl){
+    if(!log.length){logEl.innerHTML=`<div style="text-align:center;padding:20px;color:var(--text3)">لا توجد جلسات بعد</div>`;return;}
+    logEl.innerHTML=log.slice(0,15).map(s=>{
+      const info=LANG_SESS[s.type]||{i:'⏱️',n:s.type};
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:18px">${s.lang==='fr'?'🇫🇷':'🇬🇧'}</div>
+        <div style="font-size:16px">${info.i}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:700">${info.n}</div><div style="font-size:11px;color:var(--text3)">${s.date}</div></div>
+        <div style="font-size:13px;font-weight:800;color:var(--p)">${s.minutes} دق</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function langBreakdown(lang,el){
+  if(!el)return;
+  let types={};
+  for(let i=0;i<30;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const ds=d.toISOString().split('T')[0];
+    const s=JSON.parse(localStorage.getItem('ip_lang_pomo_'+lang+'_'+ds)||'{"types":{}}');
+    Object.entries(s.types||{}).forEach(([k,v])=>{types[k]=(types[k]||0)+v;});
+  }
+  const total=Object.values(types).reduce((a,b)=>a+b,0)||1;
+  if(!Object.keys(types).length){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--text3)">لا توجد جلسات</div>`;return;}
+  el.innerHTML=Object.entries(types).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{
+    const info=LANG_SESS[k]||{i:'⏱️',n:k};
+    const pct=Math.round(v/total*100);
+    return `<div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span>${info.i} ${info.n}</span><span style="font-weight:800;color:var(--p)">${v} دق (${pct}%)</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${lang==='fr'?'#003189':'#c8102e'}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ── GOALS ──
+function langRenderGoals(){
+  const goals=JSON.parse(localStorage.getItem('ip_lang_goals')||'{"fr":150,"en":150}');
+  const gfr=document.getElementById('goal-fr');
+  const gen=document.getElementById('goal-en');
+  if(gfr)gfr.value=goals.fr||150;
+  if(gen)gen.value=goals.en||150;
+
+  // calc this week
+  let frWeek=0,enWeek=0;
+  for(let i=0;i<7;i++){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const ds=d.toISOString().split('T')[0];
+    const fr=JSON.parse(localStorage.getItem('ip_lang_pomo_fr_'+ds)||'{"minutes":0}');
+    const en=JSON.parse(localStorage.getItem('ip_lang_pomo_en_'+ds)||'{"minutes":0}');
+    frWeek+=(fr.minutes||0);enWeek+=(en.minutes||0);
+  }
+
+  const area=document.getElementById('lang-goals-area');
+  if(!area)return;
+  const frPct=Math.min(100,Math.round(frWeek/(goals.fr||150)*100));
+  const enPct=Math.min(100,Math.round(enWeek/(goals.en||150)*100));
+  area.innerHTML=`
+    <div class="panel" style="margin-bottom:14px">
+      <div class="ph">📈 تقدم هذا الأسبوع</div>
+      <div class="pb">
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+            <span style="font-weight:800">🇫🇷 الفرنسية</span>
+            <span style="color:${frPct>=100?'var(--p)':'var(--text2)'};font-weight:800">${frWeek}/${goals.fr||150} دق ${frPct>=100?'🏆':''}</span>
+          </div>
+          <div class="prog-bar"><div class="prog-fill" style="width:${frPct}%;background:#003189"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+            <span style="font-weight:800">🇬🇧 الإنجليزية</span>
+            <span style="color:${enPct>=100?'var(--p)':'var(--text2)'};font-weight:800">${enWeek}/${goals.en||150} دق ${enPct>=100?'🏆':''}</span>
+          </div>
+          <div class="prog-bar"><div class="prog-fill" style="width:${enPct}%;background:#c8102e"></div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function langSaveGoals(){
+  const fr=parseInt(document.getElementById('goal-fr')?.value)||150;
+  const en=parseInt(document.getElementById('goal-en')?.value)||150;
+  localStorage.setItem('ip_lang_goals',JSON.stringify({fr,en}));
+  langRenderGoals();
+  toast('🎯 تم حفظ الأهداف!');
+}
+
+let _restoreData = null;
+
+function initSettings(){
+  // storage info
+  const info = document.getElementById('settings-storage-info');
+  if(info){
+    let totalBytes = 0;
+    for(let k in localStorage){ try{ totalBytes += localStorage[k].length * 2; }catch(e){} }
+    const kb = (totalBytes/1024).toFixed(1);
+    const tasks = (tasksData||[]).length;
+    const habits = (habitsData||[]).length;
+    const goals = (goalsData||[]).length;
+    const notes = (notesData||[]).length;
+    const logs = (khLog||[]).length;
+    const leaves = (khLeaves||[]).length;
+    info.innerHTML = `
+      📊 <strong>ملخص البيانات المحفوظة:</strong><br>
+      ✅ ${tasks} مهمة &nbsp;|&nbsp; 🔥 ${habits} عادة &nbsp;|&nbsp; 🎯 ${goals} هدف<br>
+      📝 ${notes} ملاحظة &nbsp;|&nbsp; 🎖️ ${logs} يوم خدمة &nbsp;|&nbsp; 🏖️ ${leaves} إجازة<br>
+      💿 الحجم التقريبي: ${kb} KB
+    `;
+  }
+  // sync lang buttons inside settings
+  document.querySelectorAll('#sec-settings .lang-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['ar','fr','en'][i]===curLang);
+  });
+}
+
+function settingsExport(){
+  const uid = curUser ? curUser.uid : 'guest';
+  const backup = {
+    _version: 1,
+    _date: new Date().toISOString(),
+    _user: curUser ? { name: curUser.name, email: curUser.email } : { name: 'Guest' },
+    tasks:    load('tasks',   []),
+    habits:   load('habits',  []),
+    goals:    load('goals',   []),
+    notes:    load('notes',   []),
+    events:   load('events',  []),
+    kh_log:   load('kh_log',  []),
+    kh_leaves:load('kh_leaves',[]),
+    lang_vocab:load('lang_vocab',[]),
+  };
+  const json = JSON.stringify(backup, null, 2);
+  const blob = new Blob([json], { type: 'application/json;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  const dateStr = new Date().toISOString().slice(0,10);
+  link.download = `intaj-backup-${dateStr}.json`;
+  link.click();
+  toast('✅ تم تحميل النسخة الاحتياطية!');
+}
+
+function settingsImport(input){
+  const file = input.files[0];
+  if(!file){ return; }
+  document.getElementById('restore-filename').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if(!data._version){ toast('⚠️ الملف غير صالح!'); return; }
+      _restoreData = data;
+      // show preview
+      const tasks    = (data.tasks||[]).length;
+      const habits   = (data.habits||[]).length;
+      const goals    = (data.goals||[]).length;
+      const notes    = (data.notes||[]).length;
+      const logs     = (data.kh_log||[]).length;
+      const leaves   = (data.kh_leaves||[]).length;
+      const dateStr  = data._date ? new Date(data._date).toLocaleDateString('ar-MA') : '—';
+      document.getElementById('restore-preview-content').innerHTML = `
+        <div class="stat-card"><div class="stat-num" style="color:var(--p)">${tasks}</div><div class="stat-lbl">مهام</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--orange)">${habits}</div><div class="stat-lbl">عادات</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--purple)">${goals}</div><div class="stat-lbl">أهداف</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--blue)">${notes}</div><div class="stat-lbl">ملاحظات</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--p)">${logs}</div><div class="stat-lbl">أيام خدمة</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--gold)">${leaves}</div><div class="stat-lbl">إجازات</div></div>
+      `;
+      const prev = document.getElementById('restore-preview');
+      prev.style.display = 'block';
+      prev.innerHTML = `
+        <div style="font-size:13px;font-weight:800;color:var(--p);margin-bottom:4px">📋 ما يحتويه الملف:</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:12px">📅 تاريخ النسخة: ${dateStr} &nbsp;|&nbsp; 👤 ${data._user?.name||'—'}</div>
+        <div class="cards-row" style="margin-bottom:14px">
+          <div class="stat-card"><div class="stat-num" style="color:var(--p)">${tasks}</div><div class="stat-lbl">مهام</div></div>
+          <div class="stat-card"><div class="stat-num" style="color:var(--orange)">${habits}</div><div class="stat-lbl">عادات</div></div>
+          <div class="stat-card"><div class="stat-num" style="color:var(--purple)">${goals}</div><div class="stat-lbl">أهداف</div></div>
+          <div class="stat-card"><div class="stat-num" style="color:var(--blue)">${notes}</div><div class="stat-lbl">ملاحظات</div></div>
+          <div class="stat-card"><div class="stat-num" style="color:var(--p)">${logs}</div><div class="stat-lbl">أيام خدمة</div></div>
+          <div class="stat-card"><div class="stat-num" style="color:var(--gold)">${leaves}</div><div class="stat-lbl">إجازات</div></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-p" onclick="settingsConfirmRestore()">✅ تأكيد الاسترجاع</button>
+          <button class="btn btn-ghost" onclick="settingsCancelRestore()">❌ إلغاء</button>
+        </div>
+      `;
+    } catch(err){
+      toast('⚠️ خطأ في قراءة الملف!');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function settingsConfirmRestore(){
+  if(!_restoreData){ toast('⚠️ ما كاين ملف!'); return; }
+  if(!confirm('⚠️ تأكيد: هادا غادي يبدل جميع بياناتك الحالية بالنسخة الاحتياطية. واصل؟')){ return; }
+  const d = _restoreData;
+  save('tasks',     d.tasks     || []);
+  save('habits',    d.habits    || []);
+  save('goals',     d.goals     || []);
+  save('notes',     d.notes     || []);
+  save('events',    d.events    || []);
+  save('kh_log',    d.kh_log    || []);
+  save('kh_leaves', d.kh_leaves || []);
+  save('lang_vocab',d.lang_vocab|| []);
+  loadData();
+  renderAll();
+  _restoreData = null;
+  document.getElementById('restore-preview').style.display = 'none';
+  document.getElementById('restore-filename').textContent = 'لم يُختر ملف';
+  document.getElementById('restore-file').value = '';
+  initSettings();
+  toast('🎉 تم استرجاع البيانات بنجاح!', 3500);
+}
+
+function settingsCancelRestore(){
+  _restoreData = null;
+  document.getElementById('restore-preview').style.display = 'none';
+  document.getElementById('restore-filename').textContent = 'لم يُختر ملف';
+  document.getElementById('restore-file').value = '';
+}
+
+function settingsClearAll(){
+  if(!confirm('⚠️ تأكيد أول: هل أنت متأكد تمسح كل البيانات؟')){ return; }
+  if(!confirm('⚠️ تأكيد ثاني ونهائي: هذا لا يمكن التراجع عنه!')){ return; }
+  ['tasks','habits','goals','notes','events','kh_log','kh_leaves'].forEach(k => save(k,[]));
+  loadData(); renderAll(); initSettings();
+  toast('🗑️ تم مسح جميع البيانات', 3000);
 }
 
 // ══════════════════════════════════════════
