@@ -628,6 +628,7 @@ body.dark .n-y{background:#2a2510}body.dark .n-g{background:#0f2a1a}body.dark .n
           <div id="kh-day-info" style="font-size:12px;color:var(--text2);padding:8px 0;text-align:center">اضغط على يوم</div>
         </div>
       </div>
+      <div id="kh-smart-tip"></div>
       <div class="panel"><div class="ph">🏖️ رصيد الإجازات</div><div class="pb" id="kh-bal-dash"></div></div>
     </div>
     <div class="panel"><div class="ph">🕐 آخر الإدخالات</div><div class="pb" id="kh-recent"></div></div>
@@ -638,23 +639,22 @@ body.dark .n-y{background:#2a2510}body.dark .n-g{background:#0f2a1a}body.dark .n
     <div class="panel"><div class="ph">➕ تسجيل يوم خدمة</div>
       <div class="pb">
         <div class="fr">
-          <div class="fg"><label class="lbl">التاريخ</label><input class="inp" type="date" id="kl-date"/></div>
+          <div class="fg"><label class="lbl">📅 البداية (التاريخ والوقت)</label><input class="inp" type="datetime-local" id="kl-start"/></div>
+          <div class="fg"><label class="lbl">📅 النهاية (التاريخ والوقت)</label><input class="inp" type="datetime-local" id="kl-end"/></div>
+        </div>
+        <div class="fr">
           <div class="fg"><label class="lbl">نوع الخدمة</label>
             <select class="inp" id="kl-type">
               <option value="normal">☀️ عادية</option><option value="night">🌙 ليلية</option>
               <option value="mission">🚗 مأمورية</option><option value="absence">😷 غياب</option>
             </select>
           </div>
-        </div>
-        <div class="fr">
-          <div class="fg"><label class="lbl">⏰ دخول</label><input class="inp" type="time" id="kl-in" value="08:00"/></div>
-          <div class="fg"><label class="lbl">⏰ خروج</label><input class="inp" type="time" id="kl-out" value="16:30"/></div>
           <div class="fg"><label class="lbl">📍 المديرية</label><input class="inp" id="kl-place" placeholder="مثال: مكتب الرباط"/></div>
         </div>
         <div class="fg"><label class="lbl">ملاحظات</label><textarea class="inp" id="kl-note" placeholder="شنو طرا اليوم؟"></textarea></div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-p" onclick="khAddLog()">➕ تسجيل</button>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('kl-date').value=TODAY">📅 اليوم</button>
+          <button class="btn btn-ghost btn-sm" onclick="khExportCSV()">📥 تصدير</button>
         </div>
       </div>
     </div>
@@ -859,6 +859,72 @@ function showUserMenu(){
   } else {
     document.getElementById('authScreen').classList.remove('hidden');
   }
+}
+
+// ══════════════════════════════════════════
+// 🤖 AI TIPS & SMART ANALYTICS
+// ══════════════════════════════════════════
+const KH_TIPS=[
+  'اليوم بداية جديدة.','راك قادر توصل.','خطوة صغيرة اليوم.','كمّل الطريق ديالك.','متستسلمش دابا.',
+  'الخير جاي فطريقو.','آمن براسك.','دير اللي عليك اليوم.','المستقبل كيتبنى اليوم.','ركّز وغادي توصل.',
+  'اليوم فرصة جديدة.','خدم بشوية بشوية.','النجاح كيجي بالصبر.','طوّر راسك كل نهار.','دير حاجة زوينة اليوم.',
+  'قرّب خطوة للحلم.','كل مجهود كيتحسب.','اليوم أحسن من البارح.','متخافش من البداية.','بدا ولو بشوية.',
+  'الحلم ديالك يستاهل.','خليك إيجابي.','كل نهار تقدم.','دير اللي تقدر عليه.','النجاح رحلة.',
+  'الطريق طويل ولكن ممكن.','الثقة فالنفس قوة.','حاول مرة أخرى.','تعلم من كل تجربة.','خدم بصبر.',
+  'كل تعب عندو نتيجة.','ركز على الهدف.','المستقبل ديالك مهم.','كل دقيقة كتفرق.','استثمر فاليوم.',
+  'دير مجهود إضافي.','الصبر مفتاح الفرج.','اليوم فرصة للتغيير.','متوقفش دابا.','كمّل التحدي.',
+  'الحلم قريب.','راك فطريق الصحيح.','تقدم خطوة أخرى.','اليوم غادي يكون مزيان.','دير أحسن ما عندك.',
+  'ركّز وخدم.','الإرادة كتغلب الصعاب.','كل نهار تعلم جديد.','خليك قوي.','النجاح كيحب المثابرين.',
+  'الطريق كيبان بالمشي.','خدم على راسك.','التغيير كيبدا منك.','ماكاينش مستحيل.','جرّب مرة أخرى.',
+  'اليوم خطوة للحلم.','اجتهد وغادي توصل.','الحلم محتاج خدمة.','دير تقدم صغير.','خليك مستمر.',
+  'كل نهار فرصة.','ركز على التقدم.','البارح فات واليوم لك.','متضيعش الفرصة.','استغل الوقت.',
+  'العمل اليوم كيبني الغد.','ثابر وغادي تربح.','ما توقفش الحلم.','كل خطوة مهمة.','دير اللي يقدر عليه قلبك.',
+  'تقدم بلا خوف.','المستقبل كيستناك.','خليك إيجابي ديما.','الصبر كيجيب الخير.','خدم بذكاء.',
+  'النجاح كيبدا بالفكرة.','كل بداية صعيبة.','ولكن النهاية زوينة.','اليوم خدم وغدا ترتاح.','كل يوم فرصة للتعلم.',
+  'طاقة جديدة اليوم.','بدا من جديد.','ركّز على الهدف.','الحلم ديالك مهم.','اليوم دير خطوة.',
+  'متستسلمش بسهولة.','خليك ثابت.','الثقة كتفتح البيبان.','كل نهار أحسن.','الطريق واضح قدامك.',
+  'خدم بشغف.','المستقبل مشرق.','اليوم عندك فرصة.','الإرادة تصنع الفرق.','دير جهدك كامل.',
+  'كل خطوة تقربك.','النجاح ما كيجيش صدفة.','استمر فالمحاولة.','راك قريب توصل.','ديما لقدّام 🚀'
+];
+
+function khGetRandomTip(){ return KH_TIPS[Math.floor(Math.random()*KH_TIPS.length)]; }
+
+function khGetSmartTip(){
+  const month=new Date().toISOString().slice(0,7);
+  const monthLogs=khLog.filter(l=>l.date.startsWith(month));
+  const hours=monthLogs.reduce((s,l)=>s+l.hours,0);
+  const nightShifts=monthLogs.filter(l=>l.type==='night').length;
+  const today=new Date().toISOString().split('T')[0];
+  const todayLogged=khLog.filter(l=>l.date===today).length;
+  
+  if(hours>200) return '⚠️ واخا تشتغل بزاف! قلل شوية 💪';
+  if(hours>150) return '✨ الالتزام ديالك محترم! استمر';
+  if(nightShifts>15) return '😴 الليل دخلك بزاف... خدم براك';
+  if(hours<50) return '🚀 بدا تسجل... راك قريب تصير champion!';
+  if(todayLogged===0) return '📝 لم تسجل اليوم... دير حاجة!';
+  return khGetRandomTip();
+}
+
+function khGetAnalytics(){
+  const month=new Date().toISOString().slice(0,7);
+  const monthLogs=khLog.filter(l=>l.date.startsWith(month));
+  const hours=monthLogs.reduce((s,l)=>s+l.hours,0);
+  const days=monthLogs.length;
+  const avg=days>0?Math.round(hours/days*100)/100:0;
+  const ot=monthLogs.reduce((s,l)=>s+Math.max(0,l.hours-8),0);
+  const night=monthLogs.filter(l=>l.type==='night').length;
+  return{hours,days,avg,ot,night};
+}
+
+function khExportCSV(){
+  let csv='التاريخ,البداية,النهاية,الساعات,النوع,الملاحظة\n';
+  khLog.forEach(log=>{ csv+=`${log.date},${log.timeIn},${log.timeOut},${log.hours},${log.type},"${log.note||''}"\n`; });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download='logs-'+new Date().toISOString().slice(0,10)+'.csv';
+  link.click();
+  toast('✅ تم التصدير');
 }
 
 // ══════════════════════════════════════════
@@ -1278,7 +1344,13 @@ function khMonthStr(d=new Date()){return`${d.getFullYear()}-${String(d.getMonth(
 
 function initKhedmati(){
   khLog=load('kh_log',[]);khLeaves=load('kh_leaves',[]);
-  document.getElementById('kl-date').value=TODAY;
+  
+  // تعيين القيم الافتراضية للبداية والنهاية
+  const now=new Date();
+  const tomorrow=new Date(now.getTime()+86400000);
+  document.getElementById('kl-start').value=now.toISOString().slice(0,16);
+  document.getElementById('kl-end').value=tomorrow.toISOString().slice(0,16);
+  
   document.getElementById('kv-from').value=TODAY;
   document.getElementById('kv-to').value=TODAY;
   const sm=document.getElementById('kh-sm');if(sm&&!sm.value)sm.value=khMonthStr();
@@ -1308,10 +1380,47 @@ function khRenderHero(){
 
 function khRenderDash(){
   khRenderHero();khRenderCal();khRenderBalance('kh-bal-dash');
+  
+  // 🤖 إضافة نصيحة ذكية في Dashboard
+  const smartTipEl=document.getElementById('kh-smart-tip');
+  if(smartTipEl){
+    const analytics=khGetAnalytics();
+    const tip=khGetSmartTip();
+    smartTipEl.innerHTML=`<div style="background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:14px;border-radius:12px;margin-bottom:12px;font-size:13px;line-height:1.6">
+      <div style="font-size:18px;margin-bottom:6px">🤖</div>
+      <div>${tip}</div>
+      <div style="margin-top:8px;font-size:11px;opacity:.9">📊 هذا الشهر: ${analytics.hours} ساعات • ${analytics.days} أيام • معدل: ${analytics.avg}</div>
+    </div>`;
+  }
+  
   const rec=document.getElementById('kh-recent');if(!rec)return;
   const last=khLog.slice(0,5);
-  rec.innerHTML=last.length?last.map(e=>khEntryHTML(e)).join('')
-    :`<div style="text-align:center;padding:20px;color:var(--text3)">ابدأ بتسجيل أول يوم خدمة! 🎖️</div>`;
+  if(last.length){
+    let html=`<table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tbody>`;
+    last.forEach(e=>{
+      const d=new Date(e.date);
+      const dateStr=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+      const d2=new Date(e.endDate||e.date);
+      const endDateStr=String(d2.getDate()).padStart(2,'0')+'/'+String(d2.getMonth()+1).padStart(2,'0')+'/'+d2.getFullYear();
+      html+=`<tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:8px;text-align:right;color:var(--text);font-size:12px">
+          <div style="font-weight:700">${dateStr}</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:2px">⏰ ${e.timeIn}</div>
+        </td>
+        <td style="padding:8px;text-align:right;color:var(--text);font-size:12px">
+          <div style="font-weight:700">${endDateStr}</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:2px">⏰ ${e.timeOut}</div>
+        </td>
+        <td style="padding:8px;text-align:center;font-weight:800;color:var(--p)">${fmtH(e.hours)}</td>
+        <td style="padding:8px;text-align:right;color:var(--text2);font-size:11px">${e.note||e.place||'—'}</td>
+      </tr>`;
+    });
+    html+=`</tbody></table>`;
+    rec.innerHTML=html;
+  } else {
+    rec.innerHTML=`<div style="text-align:center;padding:20px;color:var(--text3)">ابدأ بتسجيل أول يوم خدمة! 🎖️</div>`;
+  }
 }
 
 function khRenderCal(){
@@ -1352,36 +1461,78 @@ function khDayInfo(ds){
 
 function khEntryHTML(e){
   const d=new Date(e.date);
-  return `<div class="day-entry t-${e.type}">
-    <div class="de-icon">${KH_TYPE[e.type]?.i||'📅'}</div>
-    <div class="de-body">
-      <div class="de-date">${KH_DAYS[d.getDay()]} — ${e.date}</div>
-      <div class="de-title">${KH_TYPE[e.type]?.n||e.type}${e.place?' — '+e.place:''}</div>
-      ${e.note?`<div class="de-note">${e.note}</div>`:''}
-      <div class="de-badges">
-        ${e.hours?`<span class="eb eb-h">⏱️ ${fmtH(e.hours)}</span>`:''}
-        ${e.hours>8?`<span class="eb eb-ot">⚡ أوفرتيم</span>`:''}
-      </div>
+  const bgColor=e.type==='normal'?'linear-gradient(135deg,var(--p),var(--p2))':
+                 e.type==='night'?'linear-gradient(135deg,var(--purple),#9d7ba3)':
+                 e.type==='mission'?'linear-gradient(135deg,var(--gold),#f4b860)':
+                 'linear-gradient(135deg,var(--red),#ff6b7a)';
+  
+  return `<div style="padding:14px;background:${bgColor};border-radius:10px;color:#fff;display:flex;align-items:center;gap:12px;margin-bottom:10px;box-shadow:0 4px 12px rgba(45,106,79,0.2);transition:.2s" onmouseover="this.style.boxShadow='0 6px 16px rgba(45,106,79,0.3)'" onmouseout="this.style.boxShadow='0 4px 12px rgba(45,106,79,0.2)'">
+    
+    <div style="flex:1;text-align:right">
+      <div style="font-size:13px;font-weight:700">${e.date}</div>
+      <div style="font-size:10px;opacity:0.85">⏰ ${e.timeIn}</div>
     </div>
-    <button class="task-action" onclick="khDelLog(${e.id})">🗑️</button>
+    
+    <div style="width:1px;height:30px;background:rgba(255,255,255,0.3)"></div>
+    
+    <div style="flex:1;text-align:right">
+      <div style="font-size:13px;font-weight:700">${KH_TYPE[e.type]?.n||e.type}</div>
+      <div style="font-size:10px;opacity:0.85">⏰ ${e.timeOut}</div>
+    </div>
+    
+    <div style="width:1px;height:30px;background:rgba(255,255,255,0.3)"></div>
+    
+    <div style="flex:0.8;text-align:center">
+      <div style="font-size:14px;font-weight:800">${fmtH(e.hours)}</div>
+      <div style="font-size:9px;opacity:0.85">ساعة</div>
+    </div>
+    
+    <div style="width:1px;height:30px;background:rgba(255,255,255,0.3)"></div>
+    
+    <div style="flex:1;text-align:right">
+      <div style="font-size:11px">${e.place||e.note||'—'}</div>
+    </div>
+    
+    <button class="task-action" onclick="khDelLog(${e.id})" style="flex-shrink:0;padding:4px 8px;background:rgba(255,255,255,0.2);border:none;border-radius:6px;color:#fff;cursor:pointer;font-size:14px;transition:.2s" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">🗑️</button>
   </div>`;
 }
 
 function khAddLog(){
-  const date=document.getElementById('kl-date').value;
-  if(!date){toast('⚠️ اختر التاريخ!');return;}
+  const start=document.getElementById('kl-start').value;
+  const end=document.getElementById('kl-end').value;
+  
+  if(!start||!end){toast('⚠️ اختر التواريخ والأوقات!');return;}
+  
+  const startDate=new Date(start);
+  const endDate=new Date(end);
+  
+  if(endDate<=startDate){toast('⚠️ تاريخ النهاية لازم بعد البداية!');return;}
+  
   const type=document.getElementById('kl-type').value;
-  const inT=document.getElementById('kl-in').value;
-  const outT=document.getElementById('kl-out').value;
-  const entry={id:Date.now(),date,type,timeIn:inT,timeOut:outT,
-    hours:type==='absence'?0:khHours(inT,outT),
-    place:document.getElementById('kl-place').value.trim(),
-    note:document.getElementById('kl-note').value.trim()};
-  khLog=khLog.filter(e=>e.date!==date);
+  const place=document.getElementById('kl-place').value.trim();
+  const note=document.getElementById('kl-note').value.trim();
+  
+  // حساب الساعات من الفرق بين التاريخين
+  const diffMs=endDate-startDate;
+  const hours=type==='absence'?0:Math.round(diffMs/(1000*60*60)*100)/100;
+  
+  // استخراج التاريخ والأوقات
+  const date=startDate.toISOString().split('T')[0];
+  const endDateStr=endDate.toISOString().split('T')[0];
+  const timeIn=String(startDate.getHours()).padStart(2,'0')+':'+String(startDate.getMinutes()).padStart(2,'0');
+  const timeOut=String(endDate.getHours()).padStart(2,'0')+':'+String(endDate.getMinutes()).padStart(2,'0');
+  
+  const entry={id:Date.now(),date,endDate:endDateStr,type,timeIn,timeOut,hours,place,note};
+  khLog=khLog.filter(e=>e.date!==date&&e.endDate!==endDateStr);
   khLog.push(entry);khLog.sort((a,b)=>b.date.localeCompare(a.date));
   save('kh_log',khLog);
+  
+  // مسح الحقول
+  document.getElementById('kl-start').value='';
+  document.getElementById('kl-end').value='';
   document.getElementById('kl-note').value='';
-  khRenderLog();khRenderHero();toast('✅ تم تسجيل يوم '+date);
+  
+  khRenderLog();khRenderHero();toast(`✅ تم: ${hours} ساعة من ${date} إلى ${endDateStr}`);
 }
 
 function khDelLog(id){if(!confirm('مسح؟'))return;khLog=khLog.filter(e=>e.id!==id);save('kh_log',khLog);khRenderLog();khRenderHero();}
@@ -1399,8 +1550,46 @@ function khRenderLog(){
   let data=khLog;
   if(khLogFilter!=='all')data=data.filter(e=>e.type===khLogFilter);
   if(mf)data=data.filter(e=>e.date.startsWith(mf));
-  list.innerHTML=data.length?data.map(e=>khEntryHTML(e)).join('')
-    :`<div style="text-align:center;padding:28px;color:var(--text3)">لا توجد إدخالات 📋</div>`;
+  
+  if(!data.length){
+    list.innerHTML=`<div style="text-align:center;padding:28px;color:var(--text3)">لا توجد إدخالات 📋</div>`;
+    return;
+  }
+  
+  let html=`<table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:12px">
+    <thead>
+      <tr style="background:var(--bg3);border-bottom:2px solid var(--border)">
+        <th style="padding:10px;text-align:right;font-weight:800;color:var(--text)">البداية</th>
+        <th style="padding:10px;text-align:right;font-weight:800;color:var(--text)">النهاية</th>
+        <th style="padding:10px;text-align:center;font-weight:800;color:var(--text)">ساعات</th>
+        <th style="padding:10px;text-align:right;font-weight:800;color:var(--text)">ملاحظة</th>
+        <th style="padding:10px;text-align:center;font-weight:800;color:var(--text)">حذف</th>
+      </tr>
+    </thead>
+    <tbody>`;
+  
+  data.slice().reverse().forEach(e=>{
+    const d=new Date(e.date);
+    const dateStr=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+    const d2=new Date(e.endDate||e.date);
+    const endDateStr=String(d2.getDate()).padStart(2,'0')+'/'+String(d2.getMonth()+1).padStart(2,'0')+'/'+d2.getFullYear();
+    html+=`<tr style="border-bottom:1px solid var(--border);transition:.2s" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='transparent'">
+      <td style="padding:10px;text-align:right;color:var(--text)">
+        <div style="font-weight:700;font-size:13px">${dateStr}</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">⏰ ${e.timeIn}</div>
+      </td>
+      <td style="padding:10px;text-align:right;color:var(--text)">
+        <div style="font-weight:700;font-size:13px">${endDateStr}</div>
+        <div style="font-size:10px;color:var(--text2);margin-top:2px">⏰ ${e.timeOut}</div>
+      </td>
+      <td style="padding:10px;text-align:center;font-weight:800;color:var(--p);font-size:14px">${fmtH(e.hours)}</td>
+      <td style="padding:10px;text-align:right;color:var(--text2);font-size:12px">${e.note||e.place||'—'}</td>
+      <td style="padding:10px;text-align:center"><button onclick="khDelLog(${e.id})" style="border:none;background:var(--red);color:#fff;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:12px;transition:.2s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">🗑️</button></td>
+    </tr>`;
+  });
+  
+  html+=`</tbody></table>`;
+  list.innerHTML=html;
 }
 
 function khAddLeave(){
@@ -1541,6 +1730,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('userAvatar').textContent=(sess.name||'G')[0].toUpperCase();
     document.getElementById('userName').textContent=sess.guest?'Guest':sess.name.split(' ')[0];
     loadData();renderAll();
+    
+    // 🤖 Initialize AI Tips
+    if('Notification' in window) Notification.requestPermission().catch(()=>{});
+    
+    // إظهار نصيحة ذكية في البداية
+    const smartTip=khGetSmartTip();
+    if(smartTip) toast('💡 '+smartTip);
   }
   // set default goal deadline
   const gd=document.getElementById('g-dead');
