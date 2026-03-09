@@ -362,40 +362,167 @@ body.dark .n-y{background:#2a2510}body.dark .n-g{background:#0f2a1a}body.dark .n
 .note-add-btn{border:2px dashed var(--border);background:none;border-radius:14px;padding:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--text3);font-family:inherit;font-size:12px;font-weight:700;transition:.2s;min-height:130px;width:100%}
 .note-add-btn:hover{border-color:var(--p2);color:var(--p);background:var(--p-ll)}
 
-/* ══ LANGUES ══ */
-.lang-hero{border-radius:var(--r);padding:20px;margin-bottom:16px;color:#fff;position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.2)}
-.lang-hero.fr{background:linear-gradient(135deg,#003189,#0055b3,#ed2939)}
-.lang-hero.en{background:linear-gradient(135deg,#012169,#c8102e,#ffffff22)}
-.lang-hero-flag{position:absolute;left:-10px;bottom:-10px;font-size:80px;opacity:.15}
-.lang-sel{display:flex;gap:8px;margin-bottom:16px}
-.lang-sel-btn{flex:1;padding:12px;border:2px solid var(--border);border-radius:12px;background:var(--bg2);font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:.25s;display:flex;align-items:center;justify-content:center;gap:8px}
-.lang-sel-btn.active.fr{border-color:#0055b3;background:#e8f0ff;color:#003189}
-.lang-sel-btn.active.en{border-color:#c8102e;background:#fff0f1;color:#8b0000}
-body.dark .lang-sel-btn.active.fr{background:rgba(0,85,179,.2)}
-body.dark .lang-sel-btn.active.en{background:rgba(200,16,46,.2)}
-/* Pomodoro lang */
-.lpomo-sessions{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;justify-content:center}
-.lpomo-sess-btn{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg3);font-family:inherit;font-size:11px;font-weight:800;cursor:pointer;color:var(--text2);transition:.2s}
-.lpomo-sess-btn.on{background:var(--p);color:#fff;border-color:var(--p)}
-/* Vocabulary */
-.vocab-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:.2s;animation:slideIn .2s ease}
-.vocab-card:hover{border-color:var(--p2);box-shadow:0 3px 12px rgba(45,106,79,.1)}
-.vocab-word{font-size:16px;font-weight:900;flex:1}
-.vocab-trans{font-size:13px;color:var(--text2);flex:1}
-.vocab-lang-badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800}
-.vb-fr{background:#e8f0ff;color:#003189}
-.vb-en{background:#fff0f1;color:#8b0000}
-/* Flashcard quiz */
-.flashcard{background:var(--bg2);border:2px solid var(--border);border-radius:20px;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.4s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow);padding:24px;text-align:center;position:relative;overflow:hidden;user-select:none}
-.flashcard:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(45,106,79,.15)}
-.flashcard.flip{border-color:var(--p);background:var(--p-ll)}
-.fc-hint{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.fc-word{font-size:28px;font-weight:900;color:var(--text)}
-.fc-sub{font-size:13px;color:var(--text2);margin-top:6px}
-.fc-tap{font-size:11px;color:var(--text3);margin-top:12px}
-/* Progress lang */
-.lang-prog-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.lang-prog-icon{font-size:20px;width:32px;text-align:center}
+/* ══ LANGUES (New Design) ══ */
+
+/* Hero animated background */
+@keyframes heroWave{
+  0%  {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes heroPulse{
+  0%,100%{transform:scale(1) rotate(0deg);opacity:.12}
+  50%    {transform:scale(1.15) rotate(8deg);opacity:.2}
+}
+@keyframes heroOrb1{
+  0%  {transform:translate(0,0)}
+  33% {transform:translate(18px,-12px)}
+  66% {transform:translate(-10px,16px)}
+  100%{transform:translate(0,0)}
+}
+@keyframes heroOrb2{
+  0%  {transform:translate(0,0)}
+  33% {transform:translate(-20px,10px)}
+  66% {transform:translate(14px,-18px)}
+  100%{transform:translate(0,0)}
+}
+@keyframes heroOrb3{
+  0%  {transform:translate(0,0) scale(1)}
+  50% {transform:translate(10px,12px) scale(1.2)}
+  100%{transform:translate(0,0) scale(1)}
+}
+
+/* Card entrance animations */
+@keyframes cardFadeUp{
+  from{opacity:0;transform:translateY(22px)}
+  to  {opacity:1;transform:translateY(0)}
+}
+@keyframes cardPop{
+  0%  {opacity:0;transform:scale(.88)}
+  70% {transform:scale(1.03)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes pillSlide{
+  from{opacity:0;transform:translateX(12px)}
+  to  {opacity:1;transform:translateX(0)}
+}
+
+.lang2-hero{
+  border-radius:var(--r);padding:22px 20px;margin-bottom:16px;color:#fff;
+  position:relative;overflow:hidden;
+  background:linear-gradient(270deg,#0a3d20,#1a5c35,#0d4a28,#1e6b40,#0a3d20);
+  background-size:400% 400%;
+  animation:heroWave 10s ease infinite;
+  box-shadow:0 8px 32px rgba(10,61,32,.45);
+}
+.lang2-hero .h-orb{position:absolute;border-radius:50%;pointer-events:none}
+.lang2-hero .h-orb1{
+  width:140px;height:140px;
+  background:radial-gradient(circle,rgba(82,183,136,.35),transparent 70%);
+  left:-30px;bottom:-30px;
+  animation:heroOrb1 7s ease-in-out infinite;
+}
+.lang2-hero .h-orb2{
+  width:110px;height:110px;
+  background:radial-gradient(circle,rgba(233,196,106,.22),transparent 70%);
+  right:-20px;top:-20px;
+  animation:heroOrb2 9s ease-in-out infinite;
+}
+.lang2-hero .h-orb3{
+  width:70px;height:70px;
+  background:radial-gradient(circle,rgba(255,255,255,.13),transparent 70%);
+  right:35%;top:10px;
+  animation:heroOrb3 6s ease-in-out infinite;
+}
+.lang2-hero::before{
+  content:'🌍';position:absolute;left:-10px;bottom:-10px;
+  font-size:90px;
+  animation:heroPulse 8s ease-in-out infinite;
+}
+.lang2-hero-title{font-size:11px;font-weight:700;opacity:.7;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px}
+.lang2-hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px}
+.lang2-mstat{text-align:center;background:rgba(255,255,255,.1);border-radius:10px;padding:10px 6px;transition:.2s}
+.lang2-mstat:hover{background:rgba(255,255,255,.18)}
+.lang2-mstat-n{font-size:20px;font-weight:900}
+.lang2-mstat-l{font-size:9px;opacity:.75;font-weight:700;margin-top:2px;text-transform:uppercase}
+
+/* Language pills strip */
+.lang2-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.lang2-pill{
+  display:flex;align-items:center;gap:6px;padding:7px 14px;
+  border-radius:20px;border:2px solid var(--border);
+  background:var(--bg2);font-family:inherit;font-size:12px;font-weight:800;
+  cursor:pointer;transition:.25s;color:var(--text2);
+}
+.lang2-pill.active{color:#fff;border-color:transparent;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.lang2-pill-add{background:var(--p-ll);border:2px dashed var(--border);color:var(--p)}
+.lang2-pill-add:hover{border-color:var(--p);background:var(--p-l)}
+
+/* Session card */
+.ls-card{
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;
+  display:flex;align-items:flex-start;gap:12px;
+  transition:.2s;animation:slideIn .25s ease;position:relative;overflow:hidden;
+}
+.ls-card:hover{box-shadow:0 4px 16px rgba(45,106,79,.1)}
+.ls-card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;border-radius:0 14px 14px 0}
+.ls-card-icon{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.ls-card-body{flex:1;min-width:0}
+.ls-card-title{font-size:14px;font-weight:800;margin-bottom:3px}
+.ls-card-meta{font-size:11px;color:var(--text3);font-weight:600;margin-bottom:5px}
+.ls-card-badges{display:flex;gap:5px;flex-wrap:wrap}
+.ls-badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800}
+.ls-card-hours{
+  text-align:center;flex-shrink:0;
+  background:var(--p-l);border-radius:10px;padding:8px 12px;
+  min-width:60px;
+}
+.ls-card-h{font-size:18px;font-weight:900;color:var(--p)}
+.ls-card-hl{font-size:9px;color:var(--p2);font-weight:700;text-transform:uppercase}
+
+/* Duration live display */
+.dur-display{
+  background:linear-gradient(135deg,var(--p),var(--p2));
+  color:#fff;border-radius:12px;padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin:10px 0;font-weight:800;
+}
+.dur-display.zero{background:var(--bg3);color:var(--text3)}
+.dur-num{font-size:22px;font-weight:900}
+.dur-lbl{font-size:10px;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+
+/* Lang manage card */
+.lang-manage-card{
+  background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:12px;padding:12px 14px;display:flex;align-items:center;
+  gap:12px;margin-bottom:8px;transition:.2s;
+}
+.lang-manage-card:hover{border-color:var(--p2)}
+.lang-manage-flag{font-size:24px;flex-shrink:0}
+.lang-manage-info{flex:1}
+.lang-manage-name{font-size:14px;font-weight:800}
+.lang-manage-sessions{font-size:11px;color:var(--text3);margin-top:1px}
+
+/* Activity type buttons */
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:7px;margin-bottom:12px}
+.act-btn{
+  padding:10px 8px;border-radius:12px;border:2px solid var(--border);
+  background:var(--bg3);font-family:inherit;font-size:11px;font-weight:800;
+  cursor:pointer;transition:.2s;text-align:center;color:var(--text2);
+}
+.act-btn:hover{border-color:var(--p2);color:var(--p)}
+.act-btn.on{color:#fff;border-color:transparent;box-shadow:0 3px 10px rgba(0,0,0,.15)}
+
+/* Stats per lang */
+.lang-stat-strip{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.lang-stat-flag{font-size:22px;flex-shrink:0}
+.lang-stat-bar-wrap{flex:1}
+.lang-stat-top{display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:4px}
 </style>
 </head>
 <body class="lang-ar">
@@ -750,111 +877,158 @@ body.dark .lang-sel-btn.active.en{background:rgba(200,16,46,.2)}
   </div>
 </div>
 
-<!-- ══ LANGUES ══ -->
+<!-- ══ LANGUES (New) ══ -->
 <div id="sec-langues" class="sec">
 
-  <!-- Language selector -->
-  <div class="lang-sel">
-    <button class="lang-sel-btn active fr" id="lbtn-fr" onclick="langSwitch('fr')">🇫🇷 Français</button>
-    <button class="lang-sel-btn en" id="lbtn-en" onclick="langSwitch('en')">🇬🇧 English</button>
+  <!-- Hero -->
+  <div class="lang2-hero">
+    <div class="h-orb h-orb1"></div>
+    <div class="h-orb h-orb2"></div>
+    <div class="h-orb h-orb3"></div>
+    <div class="lang2-hero-title">🌍 إجمالي الدراسة — اليوم</div>
+    <div class="lang2-hero-grid" id="l2-hero-grid">
+      <div class="lang2-mstat"><div class="lang2-mstat-n">0</div><div class="lang2-mstat-l">دقيقة</div></div>
+    </div>
   </div>
 
   <!-- Sub tabs -->
-  <div class="sub-tabs" id="lang-subtabs">
-    <button class="sub-tab active" onclick="switchLangTab('timer',this)">⏱️ التايمر</button>
-    <button class="sub-tab" onclick="switchLangTab('stats',this)">📊 الإحصائيات</button>
-    <button class="sub-tab" onclick="switchLangTab('goals',this)">🎯 الأهداف</button>
+  <div class="sub-tabs" id="lang2-subtabs">
+    <button class="sub-tab active" onclick="l2Tab('plan',this)">📅 الخطة</button>
+    <button class="sub-tab" onclick="l2Tab('register',this)">➕ تسجيل</button>
+    <button class="sub-tab" onclick="l2Tab('stats',this)">📊 إحصائيات</button>
+    <button class="sub-tab" onclick="l2Tab('manage',this)">⚙️ اللغات</button>
   </div>
 
-  <!-- ── TIMER TAB ── -->
-  <div id="lt-timer">
-    <!-- Hero card -->
-    <div class="lang-hero fr" id="lang-hero">
-      <div class="lang-hero-flag" id="lang-hero-flag">🇫🇷</div>
-      <div style="font-size:11px;font-weight:700;opacity:.7;letter-spacing:.5px;margin-bottom:6px" id="lang-hero-lbl">FRANÇAIS — وقت الدراسة</div>
-      <div style="font-size:22px;font-weight:900" id="lang-hero-session">📖 قراءة</div>
-      <div style="font-size:12px;opacity:.8;margin-top:4px" id="lang-hero-stats-txt">جلسات اليوم: 0</div>
-    </div>
+  <!-- ── PLAN TAB ── -->
+  <div id="l2t-plan">
+    <!-- Language filter pills -->
+    <div class="lang2-pills" id="l2-filter-pills"></div>
+    <!-- Sessions list -->
+    <div id="l2-plan-list"></div>
+  </div>
 
-    <!-- Session type -->
-    <div class="lpomo-sessions" id="lang-sess-types">
-      <button class="lpomo-sess-btn on" onclick="langSetSession('read',this)">📖 قراءة</button>
-      <button class="lpomo-sess-btn" onclick="langSetSession('listen',this)">🎧 استماع</button>
-      <button class="lpomo-sess-btn" onclick="langSetSession('speak',this)">🗣️ محادثة</button>
-      <button class="lpomo-sess-btn" onclick="langSetSession('write',this)">✍️ كتابة</button>
-      <button class="lpomo-sess-btn" onclick="langSetSession('revision',this)">🔄 مراجعة</button>
-    </div>
+  <!-- ── REGISTER TAB ── -->
+  <div id="l2t-register" style="display:none">
+    <div class="panel">
+      <div class="ph">➕ تسجيل حصة دراسية جديدة</div>
+      <div class="pb">
 
-    <!-- Pomodoro ring -->
-    <div class="pomo-wrap" style="padding:10px 0">
-      <div class="pomo-ring" id="langPomoRing">
-        <div class="pomo-time" id="langPomoTime">25:00</div>
-        <div class="pomo-label" id="langPomoLabel">تركيز</div>
-      </div>
-      <div class="pomo-dots" id="langPomoDots"></div>
-      <div class="pomo-btns">
-        <button class="btn btn-p" id="langPomoBtn" onclick="langPomoToggle()">▶ ابدأ</button>
-        <button class="btn btn-ghost" onclick="langPomoReset()">↺ إعادة</button>
-        <button class="btn btn-ghost" onclick="langPomoSkip()">⏭ تخطي</button>
-      </div>
-      <div class="pomo-set">
-        <div class="pset">⏱️ <input type="number" id="lpw" value="25" min="1" max="90" onchange="langPomoSetupUpdate()"/> دق تركيز</div>
-        <div class="pset">☕ <input type="number" id="lpb" value="5" min="1" max="30" onchange="langPomoSetupUpdate()"/> دق راحة</div>
-        <div class="pset">🔄 <input type="number" id="lps" value="4" min="1" max="8" onchange="langPomoSetupUpdate()"/> جلسات</div>
-      </div>
-    </div>
+        <!-- Language select -->
+        <div class="fg">
+          <label class="lbl">🌍 اللغة</label>
+          <select class="inp" id="l2-lang-sel"></select>
+        </div>
 
-    <!-- Today quick stats -->
-    <div class="panel"><div class="ph">📊 إحصائيات اليوم</div>
-      <div class="pb"><div class="cards-row" id="lang-today-stats"></div></div>
+        <!-- Activity type -->
+        <div class="fg">
+          <label class="lbl">📚 نوع النشاط</label>
+          <div class="act-grid" id="l2-act-grid">
+            <button class="act-btn on" data-act="read" onclick="l2PickAct('read',this)">📖<br>قراءة</button>
+            <button class="act-btn" data-act="listen" onclick="l2PickAct('listen',this)">🎧<br>استماع</button>
+            <button class="act-btn" data-act="speak" onclick="l2PickAct('speak',this)">🗣️<br>محادثة</button>
+            <button class="act-btn" data-act="write" onclick="l2PickAct('write',this)">✍️<br>كتابة</button>
+            <button class="act-btn" data-act="grammar" onclick="l2PickAct('grammar',this)">📐<br>قواعد</button>
+            <button class="act-btn" data-act="vocab" onclick="l2PickAct('vocab',this)">📝<br>مفردات</button>
+            <button class="act-btn" data-act="revision" onclick="l2PickAct('revision',this)">🔄<br>مراجعة</button>
+            <button class="act-btn" data-act="exam" onclick="l2PickAct('exam',this)">📋<br>اختبار</button>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="fg">
+          <label class="lbl">✏️ عنوان الحصة</label>
+          <input class="inp" id="l2-title" placeholder="مثال: قراءة الفصل 3 من الكتاب"/>
+        </div>
+
+        <!-- Dates -->
+        <div class="fr">
+          <div class="fg">
+            <label class="lbl">📅 تاريخ ووقت البداية</label>
+            <input class="inp" type="datetime-local" id="l2-start" oninput="l2CalcDur()"/>
+          </div>
+          <div class="fg">
+            <label class="lbl">📅 تاريخ ووقت النهاية</label>
+            <input class="inp" type="datetime-local" id="l2-end" oninput="l2CalcDur()"/>
+          </div>
+        </div>
+
+        <!-- Duration live display -->
+        <div class="dur-display zero" id="l2-dur-box">
+          <div>
+            <div class="dur-lbl">مدة الحصة</div>
+            <div class="dur-num" id="l2-dur-val">—</div>
+          </div>
+          <div style="font-size:28px">⏱️</div>
+        </div>
+
+        <!-- Notes -->
+        <div class="fg">
+          <label class="lbl">📝 ملاحظات (اختياري)</label>
+          <textarea class="inp" id="l2-notes" placeholder="أي ملاحظات عن الحصة..." style="min-height:60px"></textarea>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-p" onclick="l2AddSession()">💾 تسجيل الحصة</button>
+          <button class="btn btn-ghost btn-sm" onclick="l2SetNow()">⏰ ابدأ الآن</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- ── STATS TAB ── -->
-  <div id="lt-stats" style="display:none">
-    <!-- Total cards -->
-    <div class="cards-row" id="lang-stat-cards" style="margin-bottom:14px"></div>
-
-    <!-- 7 day chart -->
+  <div id="l2t-stats" style="display:none">
+    <div class="cards-row" id="l2-stat-totals" style="margin-bottom:14px"></div>
     <div class="panel" style="margin-bottom:14px">
-      <div class="ph">📅 دقائق الدراسة — 7 أيام</div>
-      <div class="pb"><div class="bar-chart" id="lang-chart"></div></div>
+      <div class="ph">📅 ساعات الدراسة — 7 أيام</div>
+      <div class="pb"><div class="bar-chart" id="l2-week-chart"></div></div>
     </div>
-
-    <!-- Session type breakdown -->
-    <div class="g2">
-      <div class="panel"><div class="ph">🇫🇷 تفصيل جلسات الفرنسية</div><div class="pb" id="lang-fr-breakdown"></div></div>
-      <div class="panel"><div class="ph">🇬🇧 تفصيل جلسات الإنجليزية</div><div class="pb" id="lang-en-breakdown"></div></div>
+    <div class="panel" style="margin-bottom:14px">
+      <div class="ph">🌍 توزيع الساعات حسب اللغة</div>
+      <div class="pb" id="l2-lang-breakdown"></div>
     </div>
-
-    <!-- Session log -->
-    <div class="panel" style="margin-top:14px">
-      <div class="ph">📋 سجل الجلسات الأخيرة</div>
-      <div class="pb" id="lang-session-log"></div>
+    <div class="panel">
+      <div class="ph">📋 سجل الحصص الأخيرة</div>
+      <div class="pb" id="l2-session-log"></div>
     </div>
   </div>
 
-  <!-- ── GOALS TAB ── -->
-  <div id="lt-goals" style="display:none">
-    <!-- Progress to goal -->
-    <div id="lang-goals-area"></div>
-
-    <!-- Set goals -->
-    <div class="panel">
-      <div class="ph">✏️ تحديد الأهداف الأسبوعية</div>
+  <!-- ── MANAGE TAB ── -->
+  <div id="l2t-manage" style="display:none">
+    <div class="panel" style="margin-bottom:14px">
+      <div class="ph">✏️ إضافة لغة جديدة</div>
       <div class="pb">
         <div class="fr">
           <div class="fg">
-            <label class="lbl">🇫🇷 هدف الفرنسية (دقيقة/أسبوع)</label>
-            <input class="inp" type="number" id="goal-fr" placeholder="مثال: 150" min="0"/>
+            <label class="lbl">🌍 اسم اللغة</label>
+            <input class="inp" id="l2m-name" placeholder="مثال: Español"/>
           </div>
           <div class="fg">
-            <label class="lbl">🇬🇧 هدف الإنجليزية (دقيقة/أسبوع)</label>
-            <input class="inp" type="number" id="goal-en" placeholder="مثال: 150" min="0"/>
+            <label class="lbl">🚩 العلم (Emoji)</label>
+            <input class="inp" id="l2m-flag" placeholder="🇪🇸" maxlength="4"/>
+          </div>
+          <div class="fg">
+            <label class="lbl">🎨 اللون</label>
+            <select class="inp" id="l2m-color">
+              <option value="#2d6a4f">💚 أخضر</option>
+              <option value="#003189">💙 أزرق داكن</option>
+              <option value="#e63946">❤️ أحمر</option>
+              <option value="#7b5ea7">💜 بنفسجي</option>
+              <option value="#e9c46a">💛 ذهبي</option>
+              <option value="#f4a261">🧡 برتقالي</option>
+              <option value="#457b9d">🩵 أزرق فاتح</option>
+              <option value="#c8102e">🔴 أحمر داكن</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end">
+            <button class="btn btn-p" style="width:100%;justify-content:center" onclick="l2AddLang()">➕ إضافة</button>
           </div>
         </div>
-        <button class="btn btn-p" onclick="langSaveGoals()">💾 حفظ الأهداف</button>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px">💡 لغات مقترحة: 🇫🇷 Français, 🇬🇧 English, 🇪🇸 Español, 🇩🇪 Deutsch, 🇮🇹 Italiano, 🇸🇦 العربية الفصحى</div>
       </div>
+    </div>
+    <div class="panel">
+      <div class="ph">🌍 لغاتي الحالية</div>
+      <div class="pb" id="l2-manage-list"></div>
     </div>
   </div>
 
@@ -1979,279 +2153,388 @@ function khCalcStreak(){
 }
 
 // ══════════════════════════════════════════
-//  LANGUES — إدارة وقت تعلم اللغات
+//  LANGUES v2 — خطة دراسة اللغات
 // ══════════════════════════════════════════
-let curLang2='fr';
-let lpWork=25,lpBreak=5,lpSess=4,lpCurSess=1,lpIsBreak=false,lpRunning=false,lpLeft=25*60,lpTimer=null;
-let lpSessionType='read';
-const LANG_SESS={read:{n:'قراءة',i:'📖'},listen:{n:'استماع',i:'🎧'},speak:{n:'محادثة',i:'🗣️'},write:{n:'كتابة',i:'✍️'},revision:{n:'مراجعة',i:'🔄'}};
+
+const L2_ACT = {
+  read:    {n:'قراءة',     i:'📖', color:'#2d6a4f'},
+  listen:  {n:'استماع',    i:'🎧', color:'#457b9d'},
+  speak:   {n:'محادثة',    i:'🗣️', color:'#f4a261'},
+  write:   {n:'كتابة',     i:'✍️', color:'#7b5ea7'},
+  grammar: {n:'قواعد',     i:'📐', color:'#e63946'},
+  vocab:   {n:'مفردات',    i:'📝', color:'#e9c46a'},
+  revision:{n:'مراجعة',    i:'🔄', color:'#52b788'},
+  exam:    {n:'اختبار',    i:'📋', color:'#c8102e'},
+};
+
+const L2_DEFAULT_LANGS = [
+  {id:'fr', name:'Français',    flag:'🇫🇷', color:'#003189'},
+  {id:'en', name:'English',     flag:'🇬🇧', color:'#c8102e'},
+];
+
+let l2Langs   = [];   // array of {id, name, flag, color}
+let l2Sessions= [];   // array of {id, langId, act, title, start, end, hours, notes, date}
+let l2SelAct  = 'read';
+let l2PlanFilter = 'all';
+
+function l2LoadData(){
+  const saved = JSON.parse(localStorage.getItem('ip_l2_langs')||'null');
+  l2Langs = saved && saved.length ? saved : JSON.parse(JSON.stringify(L2_DEFAULT_LANGS));
+  l2Sessions = load('l2_sessions', []);
+}
+
+function l2SaveLangs(){ localStorage.setItem('ip_l2_langs', JSON.stringify(l2Langs)); }
+function l2SaveSessions(){ save('l2_sessions', l2Sessions); }
 
 function initLangues(){
-  langUpdateHero();
-  langRenderTodayStats();
-  langRenderPomoDots();
+  l2LoadData();
+  l2RenderLangSel();
+  l2RenderFilterPills();
+  l2RenderPlan();
+  l2RenderHero();
+  // set default datetime
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const fmt = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const end = new Date(now.getTime() + 60*60*1000);
+  const s=document.getElementById('l2-start'); if(s)s.value=fmt(now);
+  const e=document.getElementById('l2-end');   if(e)e.value=fmt(end);
+  l2CalcDur();
 }
 
-function langSwitch(l){
-  curLang2=l;
-  document.getElementById('lbtn-fr').className='lang-sel-btn'+(l==='fr'?' active fr':' fr');
-  document.getElementById('lbtn-en').className='lang-sel-btn'+(l==='en'?' active en':' en');
-  langUpdateHero();
-  langRenderTodayStats();
-}
-
-function langUpdateHero(){
-  const hero=document.getElementById('lang-hero');
-  const flag=document.getElementById('lang-hero-flag');
-  const lbl=document.getElementById('lang-hero-lbl');
-  if(!hero)return;
-  hero.className='lang-hero '+curLang2;
-  flag.textContent=curLang2==='fr'?'🇫🇷':'🇬🇧';
-  lbl.textContent=(curLang2==='fr'?'FRANÇAIS':'ENGLISH')+' — وقت الدراسة';
-  const key='ip_lang_pomo_'+curLang2+'_'+TODAY;
-  const s=JSON.parse(localStorage.getItem(key)||'{"sessions":0,"minutes":0}');
-  document.getElementById('lang-hero-stats-txt').textContent=`جلسات اليوم: ${s.sessions} | ${s.minutes||0} دقيقة`;
-}
-
-function switchLangTab(tab,btn){
-  document.querySelectorAll('#lang-subtabs .sub-tab').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  ['timer','stats','goals'].forEach(t=>{
-    const el=document.getElementById('lt-'+t);
-    if(el)el.style.display=t===tab?'block':'none';
+// ── Tabs ──
+function l2Tab(tab, btn){
+  document.querySelectorAll('#lang2-subtabs .sub-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  ['plan','register','stats','manage'].forEach(t=>{
+    const el=document.getElementById('l2t-'+t);
+    if(el) el.style.display = t===tab ? 'block' : 'none';
   });
-  if(tab==='stats')langRenderStats2();
-  if(tab==='goals')langRenderGoals();
+  if(tab==='stats')   l2RenderStats();
+  if(tab==='manage')  l2RenderManage();
+  if(tab==='plan')    { l2RenderFilterPills(); l2RenderPlan(); }
 }
 
-// ── POMODORO ──
-function langPomoSetupUpdate(){
-  lpWork=parseInt(document.getElementById('lpw').value)||25;
-  lpBreak=parseInt(document.getElementById('lpb').value)||5;
-  lpSess=parseInt(document.getElementById('lps').value)||4;
-  if(!lpRunning)langPomoReset();
-  langRenderPomoDots();
+// ── Hero ──
+function l2RenderHero(){
+  const el = document.getElementById('l2-hero-grid'); if(!el) return;
+  const todaySessions = l2Sessions.filter(s=>s.date===TODAY);
+  const totalH = todaySessions.reduce((a,s)=>a+s.hours,0);
+  const totalSess = todaySessions.length;
+
+  let html = `<div class="lang2-mstat" style="animation:cardPop .4s cubic-bezier(.34,1.56,.64,1) both"><div class="lang2-mstat-n">${Math.round(totalH*10)/10}</div><div class="lang2-mstat-l">ساعات اليوم</div></div>`;
+  html += `<div class="lang2-mstat" style="animation:cardPop .4s .08s cubic-bezier(.34,1.56,.64,1) both"><div class="lang2-mstat-n">${totalSess}</div><div class="lang2-mstat-l">حصص اليوم</div></div>`;
+
+  l2Langs.forEach((lang,i)=>{
+    const mins = Math.round(l2Sessions.filter(s=>s.langId===lang.id && s.date===TODAY).reduce((a,s)=>a+s.hours*60,0));
+    html+=`<div class="lang2-mstat" style="animation:cardPop .4s ${0.14+(i*0.08)}s cubic-bezier(.34,1.56,.64,1) both"><div class="lang2-mstat-n">${mins}</div><div class="lang2-mstat-l">${lang.flag} دقيقة</div></div>`;
+  });
+  el.innerHTML = html;
 }
 
-function langSetSession(type,btn){
-  lpSessionType=type;
-  document.querySelectorAll('.lpomo-sess-btn').forEach(b=>b.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-  const s=LANG_SESS[type];
-  document.getElementById('lang-hero-session').textContent=s.i+' '+s.n;
+// ── Language selector (in register form) ──
+function l2RenderLangSel(){
+  const el = document.getElementById('l2-lang-sel'); if(!el) return;
+  el.innerHTML = l2Langs.map(l=>`<option value="${l.id}">${l.flag} ${l.name}</option>`).join('');
 }
 
-function langPomoToggle(){
-  if(lpRunning){clearInterval(lpTimer);lpRunning=false;}
-  else{lpRunning=true;lpTimer=setInterval(langPomoTick,1000);}
-  document.getElementById('langPomoRing').className='pomo-ring'+(lpRunning?' running':'')+(lpIsBreak?' brk':'');
-  document.getElementById('langPomoBtn').innerHTML=lpRunning?'⏸ إيقاف':'▶ ابدأ';
+// ── Filter pills (plan tab) ──
+function l2RenderFilterPills(){
+  const el = document.getElementById('l2-filter-pills'); if(!el) return;
+  let html = `<button class="lang2-pill${l2PlanFilter==='all'?' active':''}" style="${l2PlanFilter==='all'?'background:var(--p);':''}animation:pillSlide .3s ease both" onclick="l2SetFilter('all',this)">🌍 الكل</button>`;
+  l2Langs.forEach((lang,i)=>{
+    const on = l2PlanFilter===lang.id;
+    html+=`<button class="lang2-pill${on?' active':''}" style="${on?'background:'+lang.color+';':''}animation:pillSlide .3s ${0.06*(i+1)}s ease both" onclick="l2SetFilter('${lang.id}',this)">${lang.flag} ${lang.name}</button>`;
+  });
+  el.innerHTML = html;
 }
 
-function langPomoTick(){
-  if(lpLeft>0){lpLeft--;}
-  else{
-    if(!lpIsBreak){
-      // save session
-      const key='ip_lang_pomo_'+curLang2+'_'+TODAY;
-      const s=JSON.parse(localStorage.getItem(key)||'{"sessions":0,"minutes":0,"types":{}}');
-      s.sessions++;s.minutes=(s.minutes||0)+lpWork;
-      s.types=s.types||{};s.types[lpSessionType]=(s.types[lpSessionType]||0)+lpWork;
-      localStorage.setItem(key,JSON.stringify(s));
-      // save to session log
-      const logKey='ip_lang_log';
-      const log=JSON.parse(localStorage.getItem(logKey)||'[]');
-      log.unshift({lang:curLang2,type:lpSessionType,minutes:lpWork,date:TODAY,ts:Date.now()});
-      if(log.length>100)log.pop();
-      localStorage.setItem(logKey,JSON.stringify(log));
-      langUpdateHero();langRenderTodayStats();
-      if(lpCurSess>=lpSess){langPomoReset();toast('🎉 أنهيت جميع الجلسات!');return;}
-      lpCurSess++;lpIsBreak=true;lpLeft=lpBreak*60;toast('☕ راحة!');
-    } else {lpIsBreak=false;lpLeft=lpWork*60;toast('📚 ارجع للدراسة!');}
-    langRenderPomoDots();
-    document.getElementById('langPomoRing').className='pomo-ring running'+(lpIsBreak?' brk':'');
+function l2SetFilter(id, btn){
+  l2PlanFilter = id;
+  l2RenderFilterPills();
+  l2RenderPlan();
+}
+
+// ── Plan: session list ──
+function l2RenderPlan(){
+  const el = document.getElementById('l2-plan-list'); if(!el) return;
+  let sessions = [...l2Sessions].sort((a,b)=>b.start.localeCompare(a.start));
+  if(l2PlanFilter !== 'all') sessions = sessions.filter(s=>s.langId===l2PlanFilter);
+
+  if(!sessions.length){
+    el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--text3)">
+      <div style="font-size:40px;margin-bottom:10px">📚</div>
+      <div style="font-size:14px;font-weight:700">لا توجد حصص مسجلة</div>
+      <div style="font-size:12px;margin-top:4px">اضغط على ➕ تسجيل لإضافة حصة</div>
+    </div>`;
+    return;
   }
-  const m=String(Math.floor(lpLeft/60)).padStart(2,'0'),s2=String(lpLeft%60).padStart(2,'0');
-  document.getElementById('langPomoTime').textContent=m+':'+s2;
-  document.getElementById('langPomoLabel').textContent=lpIsBreak?'راحة':'تركيز';
+
+  // group by date
+  const byDate = {};
+  sessions.forEach(s=>{
+    if(!byDate[s.date]) byDate[s.date]=[];
+    byDate[s.date].push(s);
+  });
+
+  let html='';
+  Object.entries(byDate).forEach(([date, sess])=>{
+    const d = new Date(date);
+    const isToday = date===TODAY;
+    const dateLabel = isToday ? '📅 اليوم' : `📅 ${d.toLocaleDateString('ar-MA',{weekday:'long',day:'numeric',month:'long'})}`;
+    const totalH = sess.reduce((a,s)=>a+s.hours,0);
+    html+=`<div style="margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:13px;font-weight:900;color:var(--p)">${dateLabel}</div>
+      <div style="font-size:11px;color:var(--text3);font-weight:700">⏱️ ${Math.round(totalH*100)/100} ساعة</div>
+    </div>`;
+    let cardIdx = 0;
+    sess.forEach(s=>{
+      const idx = cardIdx++;
+      const lang = l2Langs.find(l=>l.id===s.langId)||{flag:'🌍',name:s.langId,color:'var(--p)'};
+      const act  = L2_ACT[s.act]||{i:'⏱️',n:s.act,color:'var(--p)'};
+      const h = Math.floor(s.hours);
+      const m = Math.round((s.hours-h)*60);
+      const durStr = h>0 ? `${h}س ${m}د` : `${m} دقيقة`;
+      const timeStart = s.start ? s.start.split('T')[1]?.slice(0,5) : '';
+      const timeEnd   = s.end   ? s.end.split('T')[1]?.slice(0,5)   : '';
+      html+=`<div class="ls-card" style="border-right-color:${lang.color};margin-bottom:8px;animation:cardFadeUp .35s ${idx*0.07}s ease both">
+        <div class="ls-card-icon" style="background:${act.color}22">${act.i}</div>
+        <div class="ls-card-body">
+          <div class="ls-card-title">${s.title||act.n}</div>
+          <div class="ls-card-meta">${timeStart}${timeEnd?' — '+timeEnd:''}</div>
+          <div class="ls-card-badges">
+            <span class="ls-badge" style="background:${lang.color}22;color:${lang.color}">${lang.flag} ${lang.name}</span>
+            <span class="ls-badge" style="background:${act.color}22;color:${act.color}">${act.i} ${act.n}</span>
+          </div>
+          ${s.notes?`<div style="font-size:11px;color:var(--text2);margin-top:5px">${s.notes}</div>`:''}
+        </div>
+        <div class="ls-card-hours" style="background:${lang.color}15">
+          <div class="ls-card-h" style="color:${lang.color}">${durStr}</div>
+          <div class="ls-card-hl">مدة</div>
+        </div>
+        <button class="task-action" onclick="l2DelSession(${s.id})" style="align-self:flex-start">🗑️</button>
+      </div>`;
+    });
+    html+=`<div style="height:14px"></div>`;
+  });
+  el.innerHTML = html;
 }
 
-function langPomoReset(){
-  clearInterval(lpTimer);lpRunning=false;lpIsBreak=false;lpLeft=lpWork*60;lpCurSess=1;
-  document.getElementById('langPomoTime').textContent=String(lpWork).padStart(2,'0')+':00';
-  document.getElementById('langPomoLabel').textContent='تركيز';
-  document.getElementById('langPomoBtn').innerHTML='▶ ابدأ';
-  document.getElementById('langPomoRing').className='pomo-ring';
-  langRenderPomoDots();
-}
-
-function langPomoSkip(){
-  if(lpIsBreak){lpIsBreak=false;lpLeft=lpWork*60;}
-  else{lpCurSess=Math.min(lpCurSess+1,lpSess);lpIsBreak=true;lpLeft=lpBreak*60;}
-  langRenderPomoDots();
-  document.getElementById('langPomoRing').className='pomo-ring running'+(lpIsBreak?' brk':'');
-}
-
-function langRenderPomoDots(){
-  const el=document.getElementById('langPomoDots');if(!el)return;
-  let h='';
-  for(let i=0;i<lpSess;i++){
-    const cls=i<lpCurSess-1?'pomo-dot done':i===lpCurSess-1&&!lpIsBreak?'pomo-dot cur':'pomo-dot';
-    h+=`<div class="${cls}"></div>`;
+// ── Activity picker ──
+function l2PickAct(act, btn){
+  l2SelAct = act;
+  document.querySelectorAll('.act-btn').forEach(b=>{
+    b.classList.remove('on');
+    b.style.background='';b.style.color='';
+  });
+  if(btn){
+    btn.classList.add('on');
+    const info = L2_ACT[act];
+    btn.style.background = info?.color||'var(--p)';
+    btn.style.color = '#fff';
   }
-  el.innerHTML=h;
 }
 
-function langRenderTodayStats(){
-  const el=document.getElementById('lang-today-stats');if(!el)return;
-  const fr=JSON.parse(localStorage.getItem('ip_lang_pomo_fr_'+TODAY)||'{"sessions":0,"minutes":0}');
-  const en=JSON.parse(localStorage.getItem('ip_lang_pomo_en_'+TODAY)||'{"sessions":0,"minutes":0}');
-  const total=(fr.minutes||0)+(en.minutes||0);
-  el.innerHTML=`
-    <div class="stat-card hl"><div class="stat-num" style="color:var(--p)">${total}</div><div class="stat-lbl">إجمالي دقائق</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#003189">${fr.minutes||0}</div><div class="stat-lbl">🇫🇷 دقيقة</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#c8102e">${en.minutes||0}</div><div class="stat-lbl">🇬🇧 دقيقة</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--orange)">${fr.sessions+en.sessions}</div><div class="stat-lbl">جلسات اليوم</div></div>
-  `;
-}
-
-// ── STATS ──
-function langRenderStats2(){
-  // totals for last 30 days
-  let frTotal=0,enTotal=0,frSess=0,enSess=0;
-  for(let i=0;i<30;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split('T')[0];
-    const fr=JSON.parse(localStorage.getItem('ip_lang_pomo_fr_'+ds)||'{"sessions":0,"minutes":0}');
-    const en=JSON.parse(localStorage.getItem('ip_lang_pomo_en_'+ds)||'{"sessions":0,"minutes":0}');
-    frTotal+=(fr.minutes||0);enTotal+=(en.minutes||0);
-    frSess+=fr.sessions||0;enSess+=en.sessions||0;
+// ── Duration calculator ──
+function l2CalcDur(){
+  const s = document.getElementById('l2-start')?.value;
+  const e = document.getElementById('l2-end')?.value;
+  const box = document.getElementById('l2-dur-box');
+  const val = document.getElementById('l2-dur-val');
+  if(!s||!e||!box||!val) return;
+  const diff = new Date(e) - new Date(s);
+  if(diff<=0){
+    box.className='dur-display zero';
+    val.textContent='—';
+    return;
   }
-  const cards=document.getElementById('lang-stat-cards');
-  if(cards)cards.innerHTML=`
-    <div class="stat-card hl"><div class="stat-num" style="color:var(--p)">${frTotal+enTotal}</div><div class="stat-lbl">دقيقة (30 يوم)</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#003189">${frTotal}</div><div class="stat-lbl">🇫🇷 دقيقة</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#c8102e">${enTotal}</div><div class="stat-lbl">🇬🇧 دقيقة</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:var(--orange)">${frSess+enSess}</div><div class="stat-lbl">جلسات</div></div>
-  `;
+  const totalMin = Math.round(diff/60000);
+  const h=Math.floor(totalMin/60), m=totalMin%60;
+  box.className='dur-display';
+  val.textContent = h>0 ? `${h} ساعة ${m} دقيقة` : `${m} دقيقة`;
+}
 
-  // 7 day chart
-  const days7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days7.push(d);}
-  const dayNms=['أح','إث','ث','أر','خ','ج','س'];
-  const ch=document.getElementById('lang-chart');
+// ── Set start to now ──
+function l2SetNow(){
+  const now=new Date();
+  const pad=n=>String(n).padStart(2,'0');
+  const fmt=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const s=document.getElementById('l2-start');
+  const e=document.getElementById('l2-end');
+  if(s) s.value=fmt(now);
+  if(e){ const end=new Date(now.getTime()+60*60*1000); e.value=fmt(end); }
+  l2CalcDur();
+  toast('⏰ تم تعيين الآن كبداية!');
+}
+
+// ── Add session ──
+function l2AddSession(){
+  const langId= document.getElementById('l2-lang-sel')?.value;
+  const title = document.getElementById('l2-title')?.value.trim();
+  const start = document.getElementById('l2-start')?.value;
+  const end   = document.getElementById('l2-end')?.value;
+  const notes = document.getElementById('l2-notes')?.value.trim();
+
+  if(!langId){ toast('⚠️ اختر اللغة!'); return; }
+  if(!start||!end){ toast('⚠️ حدد تاريخ البداية والنهاية!'); return; }
+
+  const diff = new Date(end) - new Date(start);
+  if(diff<=0){ toast('⚠️ تاريخ النهاية لازم بعد البداية!'); return; }
+
+  const hours = Math.round(diff/360000)/10; // rounded to 1 decimal
+  const date = start.split('T')[0];
+
+  l2Sessions.unshift({
+    id: Date.now(),
+    langId, act: l2SelAct,
+    title: title||(L2_ACT[l2SelAct]?.n||'حصة'),
+    start, end, hours, notes, date
+  });
+  l2SaveSessions();
+
+  // clear
+  document.getElementById('l2-title').value='';
+  document.getElementById('l2-notes').value='';
+  l2SetNow();
+
+  l2RenderHero();
+  toast(`✅ تم تسجيل ${hours} ساعة!`);
+}
+
+// ── Delete session ──
+function l2DelSession(id){
+  if(!confirm('مسح الحصة؟')) return;
+  l2Sessions = l2Sessions.filter(s=>s.id!==id);
+  l2SaveSessions();
+  l2RenderPlan();
+  l2RenderHero();
+}
+
+// ── Stats ──
+function l2RenderStats(){
+  l2LoadData();
+  // totals
+  const totEl = document.getElementById('l2-stat-totals');
+  if(totEl){
+    const totalH = l2Sessions.reduce((a,s)=>a+s.hours,0);
+    const totalS = l2Sessions.length;
+    let html=`<div class="stat-card hl"><div class="stat-num">${Math.round(totalH*10)/10}</div><div class="stat-lbl">ساعات إجمالي</div></div>`;
+    html+=`<div class="stat-card"><div class="stat-num" style="color:var(--blue)">${totalS}</div><div class="stat-lbl">حصص إجمالي</div></div>`;
+    l2Langs.forEach(lang=>{
+      const h=Math.round(l2Sessions.filter(s=>s.langId===lang.id).reduce((a,s)=>a+s.hours,0)*10)/10;
+      html+=`<div class="stat-card"><div class="stat-num" style="color:${lang.color}">${h}</div><div class="stat-lbl">${lang.flag} ساعة</div></div>`;
+    });
+    totEl.innerHTML=html;
+  }
+
+  // 7-day chart
+  const ch = document.getElementById('l2-week-chart');
   if(ch){
-    const vals=days7.map(d=>{
+    const dayNms=['أح','إث','ث','أر','خ','ج','س'];
+    const days=[];
+    for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d);}
+    const vals=days.map(d=>{
       const ds=d.toISOString().split('T')[0];
-      const fr=JSON.parse(localStorage.getItem('ip_lang_pomo_fr_'+ds)||'{"minutes":0}');
-      const en=JSON.parse(localStorage.getItem('ip_lang_pomo_en_'+ds)||'{"minutes":0}');
-      return (fr.minutes||0)+(en.minutes||0);
+      return Math.round(l2Sessions.filter(s=>s.date===ds).reduce((a,s)=>a+s.hours*60,0));
     });
     const mx=Math.max(...vals,1);
-    ch.innerHTML=days7.map((d,i)=>{
-      const h=Math.max(4,Math.round(vals[i]/mx*95));
+    ch.innerHTML=days.map((d,i)=>{
       const isT=i===6;
       return `<div class="bar-item">
         <div class="bar-val">${vals[i]}</div>
-        <div class="bar-fill" style="height:${h}px;background:${isT?'var(--p)':'var(--p3)'}"></div>
+        <div class="bar-fill" style="height:${Math.max(4,Math.round(vals[i]/mx*95))}px;background:${isT?'var(--p)':'var(--p3)'}"></div>
         <div class="bar-lbl" style="${isT?'color:var(--p);font-weight:900':''}">${dayNms[d.getDay()]}</div>
       </div>`;
     }).join('');
   }
 
-  // session type breakdown
-  langBreakdown('fr',document.getElementById('lang-fr-breakdown'));
-  langBreakdown('en',document.getElementById('lang-en-breakdown'));
+  // lang breakdown
+  const bd = document.getElementById('l2-lang-breakdown');
+  if(bd){
+    const totalH = l2Sessions.reduce((a,s)=>a+s.hours,0)||1;
+    bd.innerHTML = l2Langs.map(lang=>{
+      const h=Math.round(l2Sessions.filter(s=>s.langId===lang.id).reduce((a,s)=>a+s.hours,0)*10)/10;
+      const pct=Math.min(100,Math.round(h/totalH*100));
+      return `<div class="lang-stat-strip">
+        <div class="lang-stat-flag">${lang.flag}</div>
+        <div class="lang-stat-bar-wrap">
+          <div class="lang-stat-top"><span style="font-weight:800">${lang.name}</span><span style="color:${lang.color};font-weight:900">${h}س (${pct}%)</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${lang.color}"></div></div>
+        </div>
+      </div>`;
+    }).join('') || '<div style="text-align:center;padding:16px;color:var(--text3)">لا توجد بيانات</div>';
+  }
 
   // session log
-  const log=JSON.parse(localStorage.getItem('ip_lang_log')||'[]');
-  const logEl=document.getElementById('lang-session-log');
+  const logEl = document.getElementById('l2-session-log');
   if(logEl){
-    if(!log.length){logEl.innerHTML=`<div style="text-align:center;padding:20px;color:var(--text3)">لا توجد جلسات بعد</div>`;return;}
-    logEl.innerHTML=log.slice(0,15).map(s=>{
-      const info=LANG_SESS[s.type]||{i:'⏱️',n:s.type};
-      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
-        <div style="font-size:18px">${s.lang==='fr'?'🇫🇷':'🇬🇧'}</div>
-        <div style="font-size:16px">${info.i}</div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:700">${info.n}</div><div style="font-size:11px;color:var(--text3)">${s.date}</div></div>
-        <div style="font-size:13px;font-weight:800;color:var(--p)">${s.minutes} دق</div>
+    const recent = [...l2Sessions].slice(0,20);
+    if(!recent.length){ logEl.innerHTML=`<div style="text-align:center;padding:20px;color:var(--text3)">لا توجد حصص بعد</div>`; return; }
+    logEl.innerHTML=recent.map(s=>{
+      const lang=l2Langs.find(l=>l.id===s.langId)||{flag:'🌍',name:s.langId,color:'var(--p)'};
+      const act=L2_ACT[s.act]||{i:'⏱️',n:s.act};
+      return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:20px">${lang.flag}</div>
+        <div style="font-size:18px">${act.i}</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700">${s.title||act.n}</div>
+          <div style="font-size:11px;color:var(--text3)">${s.date} &nbsp;•&nbsp; ${act.n}</div>
+        </div>
+        <div style="font-size:13px;font-weight:900;color:${lang.color}">${Math.round(s.hours*60)} دق</div>
       </div>`;
     }).join('');
   }
 }
 
-function langBreakdown(lang,el){
-  if(!el)return;
-  let types={};
-  for(let i=0;i<30;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split('T')[0];
-    const s=JSON.parse(localStorage.getItem('ip_lang_pomo_'+lang+'_'+ds)||'{"types":{}}');
-    Object.entries(s.types||{}).forEach(([k,v])=>{types[k]=(types[k]||0)+v;});
-  }
-  const total=Object.values(types).reduce((a,b)=>a+b,0)||1;
-  if(!Object.keys(types).length){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--text3)">لا توجد جلسات</div>`;return;}
-  el.innerHTML=Object.entries(types).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{
-    const info=LANG_SESS[k]||{i:'⏱️',n:k};
-    const pct=Math.round(v/total*100);
-    return `<div style="margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
-        <span>${info.i} ${info.n}</span><span style="font-weight:800;color:var(--p)">${v} دق (${pct}%)</span>
+// ── Manage languages ──
+function l2RenderManage(){
+  l2LoadData();
+  const el = document.getElementById('l2-manage-list'); if(!el) return;
+  if(!l2Langs.length){ el.innerHTML=`<div style="text-align:center;padding:20px;color:var(--text3)">لا توجد لغات — أضف لغة!</div>`; return; }
+  el.innerHTML = l2Langs.map((lang,i)=>{
+    const sessCount = l2Sessions.filter(s=>s.langId===lang.id).length;
+    const hours = Math.round(l2Sessions.filter(s=>s.langId===lang.id).reduce((a,s)=>a+s.hours,0)*10)/10;
+    return `<div class="lang-manage-card">
+      <div class="lang-manage-flag">${lang.flag}</div>
+      <div style="width:6px;height:36px;border-radius:4px;background:${lang.color};flex-shrink:0"></div>
+      <div class="lang-manage-info">
+        <div class="lang-manage-name">${lang.name}</div>
+        <div class="lang-manage-sessions">${sessCount} حصة • ${hours} ساعة</div>
       </div>
-      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${lang==='fr'?'#003189':'#c8102e'}"></div></div>
+      ${l2Langs.length>1?`<button class="task-action" onclick="l2DelLang('${lang.id}')">🗑️</button>`:''}
     </div>`;
   }).join('');
 }
 
-// ── GOALS ──
-function langRenderGoals(){
-  const goals=JSON.parse(localStorage.getItem('ip_lang_goals')||'{"fr":150,"en":150}');
-  const gfr=document.getElementById('goal-fr');
-  const gen=document.getElementById('goal-en');
-  if(gfr)gfr.value=goals.fr||150;
-  if(gen)gen.value=goals.en||150;
-
-  // calc this week
-  let frWeek=0,enWeek=0;
-  for(let i=0;i<7;i++){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const ds=d.toISOString().split('T')[0];
-    const fr=JSON.parse(localStorage.getItem('ip_lang_pomo_fr_'+ds)||'{"minutes":0}');
-    const en=JSON.parse(localStorage.getItem('ip_lang_pomo_en_'+ds)||'{"minutes":0}');
-    frWeek+=(fr.minutes||0);enWeek+=(en.minutes||0);
-  }
-
-  const area=document.getElementById('lang-goals-area');
-  if(!area)return;
-  const frPct=Math.min(100,Math.round(frWeek/(goals.fr||150)*100));
-  const enPct=Math.min(100,Math.round(enWeek/(goals.en||150)*100));
-  area.innerHTML=`
-    <div class="panel" style="margin-bottom:14px">
-      <div class="ph">📈 تقدم هذا الأسبوع</div>
-      <div class="pb">
-        <div style="margin-bottom:14px">
-          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
-            <span style="font-weight:800">🇫🇷 الفرنسية</span>
-            <span style="color:${frPct>=100?'var(--p)':'var(--text2)'};font-weight:800">${frWeek}/${goals.fr||150} دق ${frPct>=100?'🏆':''}</span>
-          </div>
-          <div class="prog-bar"><div class="prog-fill" style="width:${frPct}%;background:#003189"></div></div>
-        </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
-            <span style="font-weight:800">🇬🇧 الإنجليزية</span>
-            <span style="color:${enPct>=100?'var(--p)':'var(--text2)'};font-weight:800">${enWeek}/${goals.en||150} دق ${enPct>=100?'🏆':''}</span>
-          </div>
-          <div class="prog-bar"><div class="prog-fill" style="width:${enPct}%;background:#c8102e"></div></div>
-        </div>
-      </div>
-    </div>`;
+function l2AddLang(){
+  const name  = document.getElementById('l2m-name')?.value.trim();
+  const flag  = document.getElementById('l2m-flag')?.value.trim()||'🌍';
+  const color = document.getElementById('l2m-color')?.value||'#2d6a4f';
+  if(!name){ toast('⚠️ اكتب اسم اللغة!'); return; }
+  const id = 'lang_'+Date.now();
+  l2Langs.push({id, name, flag, color});
+  l2SaveLangs();
+  document.getElementById('l2m-name').value='';
+  document.getElementById('l2m-flag').value='';
+  l2RenderManage();
+  l2RenderLangSel();
+  l2RenderFilterPills();
+  toast(`✅ تمت إضافة ${flag} ${name}!`);
 }
 
-function langSaveGoals(){
-  const fr=parseInt(document.getElementById('goal-fr')?.value)||150;
-  const en=parseInt(document.getElementById('goal-en')?.value)||150;
-  localStorage.setItem('ip_lang_goals',JSON.stringify({fr,en}));
-  langRenderGoals();
-  toast('🎯 تم حفظ الأهداف!');
+function l2DelLang(id){
+  const lang = l2Langs.find(l=>l.id===id);
+  const sessCount = l2Sessions.filter(s=>s.langId===id).length;
+  const msg = sessCount>0
+    ? `⚠️ هادي اللغة عندها ${sessCount} حصة مسجلة. واصل المسح؟`
+    : `مسح ${lang?.flag||''} ${lang?.name||''}؟`;
+  if(!confirm(msg)) return;
+  l2Langs = l2Langs.filter(l=>l.id!==id);
+  l2SaveLangs();
+  l2RenderManage();
+  l2RenderLangSel();
+  l2RenderFilterPills();
+  toast('🗑️ تم الحذف');
 }
 
 let _restoreData = null;
