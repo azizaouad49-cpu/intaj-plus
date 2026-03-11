@@ -9,26 +9,24 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-// ── FIREBASE INIT ──
 const firebaseConfig = {
   apiKey: "AIzaSyAXOxNk0al3t3ktvaFPqwlc3BLEGTsJfrY",
   authDomain: "intaj-plus.firebaseapp.com",
   projectId: "intaj-plus",
+  databaseURL: "https://intaj-plus-default-rtdb.europe-west1.firebasedatabase.app",
   storageBucket: "intaj-plus.firebasestorage.app",
   messagingSenderId: "291103544348",
   appId: "1:291103544348:web:0ac04dd94f29d45aa63bd9"
 };
 firebase.initializeApp(firebaseConfig);
 const _fbAuth = firebase.auth();
-const _fbDb = firebase.firestore();
+const _fbDb = firebase.database();
 
-// ── SYNC KEYS (data to save in Firestore per user) ──
 const FB_SYNC_KEYS = [
   'planning_notes','planning_rapports','planning_conge','planning_renforts',
-  'pf_tasks','pf_habits','pf_goals','lang_tracker_6m_clean',
-  'ip_users','dark_mode'
+  'pf_tasks','pf_habits','pf_goals','lang_tracker_6m_clean','dark_mode'
 ];
 
 let _fbSyncTimer = null;
@@ -41,40 +39,45 @@ function fbSyncNow(){
     FB_SYNC_KEYS.forEach(function(key){
       try{ var v=localStorage.getItem(key); if(v!=null) data[key]=JSON.parse(v); }catch(e){}
     });
-    try{ await _fbDb.collection('users').doc(user.uid).set(data,{merge:true}); }
-    catch(e){ console.warn('Firebase sync error:',e); }
-  }, 1500);
+    try{
+      await _fbDb.ref('users/' + user.uid + '/data').set(data);
+      showSyncStatus('☁️ Sauvegardé', '#10b981');
+    } catch(e){ console.warn('Firebase sync error:',e); }
+  }, 2000);
 }
 
 async function fbLoadUserData(uid){
   try{
-    var doc = await _fbDb.collection('users').doc(uid).get();
-    if(doc.exists){
-      var data = doc.data();
+    var snap = await _fbDb.ref('users/' + uid + '/data').get();
+    if(snap.exists()){
+      var data = snap.val();
       FB_SYNC_KEYS.forEach(function(key){
         if(data[key]!==undefined && data[key]!==null){
-          try{ localStorage.setItem(key, JSON.stringify(data[key])); }catch(e){}
+          try{
+            var orig = localStorage.__origSet__ || localStorage.setItem.bind(localStorage);
+            orig.call(localStorage, key, JSON.stringify(data[key]));
+          }catch(e){}
         }
       });
     }
   }catch(e){ console.warn('Firebase load error:',e); }
 }
 
-// ── INTERCEPT localStorage.setItem to auto-sync ──
 (function(){
   var _orig = localStorage.setItem.bind(localStorage);
+  localStorage.__origSet__ = _orig;
   localStorage.setItem = function(k,v){
     _orig(k,v);
     if(FB_SYNC_KEYS.indexOf(k)>=0){ fbSyncNow(); }
   };
 })();
 
-// ── SYNC STATUS INDICATOR ──
 function showSyncStatus(msg, color){
   var el = document.getElementById('fb-sync-status');
-  if(!el){ el=document.createElement('div'); el.id='fb-sync-status';
+  if(!el){
+    el=document.createElement('div'); el.id='fb-sync-status';
     el.style.cssText='position:fixed;bottom:72px;right:12px;z-index:9000;'
-      +'padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;'
+      +'padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;'
       +'color:#fff;transition:opacity .5s;pointer-events:none;';
     document.body.appendChild(el);
   }
@@ -5380,19 +5383,16 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <script>
 
-// ── FIREBASE AUTH SYSTEM ──
-
 function getAppUser(){ try{return JSON.parse(localStorage.getItem('app_user')||'null');}catch(e){return null;} }
 function setAppUser(u){ try{
-  var orig=localStorage.setItem.__orig__||localStorage.setItem;
+  var orig=localStorage.__origSet__||localStorage.setItem.bind(localStorage);
   orig.call(localStorage,'app_user',JSON.stringify(u));
 }catch(e){} }
 
 function logoutUser(){
   _fbAuth.signOut().then(function(){
     try{localStorage.removeItem('app_user');}catch(e){}
-    // Clear synced data on logout
-    FB_SYNC_KEYS.forEach(function(k){ try{localStorage.removeItem(k);}catch(e){} });
+    FB_SYNC_KEYS.forEach(function(k){ try{localStorage.removeItem(k);}catch(e){}; });
     showLogin();
   });
 }
@@ -5404,7 +5404,6 @@ function showLogin(){
   screen.innerHTML='';
 
   var box=mk('div','background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:36px 32px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,.3)');
-
   box.innerHTML='<div style="text-align:center;margin-bottom:28px">'
     +'<div style="width:64px;height:64px;background:linear-gradient(135deg,#0ea5e9,#0284c7);border-radius:18px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px">&#128640;</div>'
     +'<h1 style="font-size:22px;font-weight:800;color:var(--text);margin:0 0 4px">MonApp</h1>'
@@ -5435,7 +5434,7 @@ function showLogin(){
   function buildForm(isRegister){
     form.innerHTML='';
     var fields=isRegister
-      ?[{id:'reg-name',type:'text',ph:'Votre prénom',icon:'&#128100;'},{id:'reg-email',type:'email',ph:'Email',icon:'&#128231;'},{id:'reg-pass',type:'password',ph:'Mot de passe',icon:'&#128274;'}]
+      ?[{id:'reg-name',type:'text',ph:'Votre prénom',icon:'&#128100;'},{id:'reg-email',type:'email',ph:'Email',icon:'&#128231;'},{id:'reg-pass',type:'password',ph:'Mot de passe (min 6)',icon:'&#128274;'}]
       :[{id:'login-email',type:'email',ph:'Email',icon:'&#128231;'},{id:'login-pass',type:'password',ph:'Mot de passe',icon:'&#128274;'}];
 
     fields.forEach(function(f){
@@ -5452,34 +5451,28 @@ function showLogin(){
     var errDiv=mk('div','color:var(--red);font-size:12px;margin-bottom:10px;min-height:16px;text-align:center','');
     form.appendChild(errDiv);
 
-    var loadingSpinner='<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px"></span>';
+    var spinner='<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px"></span>';
 
-    var submitBtn=mk('button','width:100%;padding:13px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s;margin-bottom:12px',isRegister?"Créer mon compte 🏆":"Se connecter ⏫");
+    var submitBtn=mk('button','width:100%;padding:13px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s;margin-bottom:12px',isRegister?"Créer mon compte &#127942;":"Se connecter &#9193;");
     submitBtn.addEventListener('click',function(){
       errDiv.textContent='';
       submitBtn.disabled=true;
-      submitBtn.innerHTML=loadingSpinner+(isRegister?'Création...':'Connexion...');
+      submitBtn.innerHTML=spinner+(isRegister?'Création...':'Connexion...');
 
       if(isRegister){
         var name=(document.getElementById('reg-name')||{value:''}).value.trim();
         var email=(document.getElementById('reg-email')||{value:''}).value.trim();
         var pass=(document.getElementById('reg-pass')||{value:''}).value;
-        if(!name||!email||!pass){
-          errDiv.textContent='Remplissez tous les champs';
-          submitBtn.disabled=false; submitBtn.innerHTML="Créer mon compte 🏆"; return;
-        }
+        if(!name||!email||!pass){ errDiv.textContent='Remplissez tous les champs'; submitBtn.disabled=false; submitBtn.innerHTML="Créer mon compte &#127942;"; return; }
         _fbAuth.createUserWithEmailAndPassword(email,pass)
           .then(function(cred){
             return cred.user.updateProfile({displayName:name}).then(function(){
-              return _fbDb.collection('users').doc(cred.user.uid).set({name:name,email:email,createdAt:new Date().toISOString()},{merge:true});
-            }).then(function(){
               setAppUser({name:name,email:email,uid:cred.user.uid});
-              showSyncStatus('☁️ Compte créé!','#10b981');
-              launchApp();
-            });
+              return _fbDb.ref('users/'+cred.user.uid+'/profile').set({name:name,email:email,createdAt:new Date().toISOString()});
+            }).then(function(){ showSyncStatus('☁️ Compte créé!','#10b981'); launchApp(); });
           })
           .catch(function(e){
-            submitBtn.disabled=false; submitBtn.innerHTML="Créer mon compte 🏆";
+            submitBtn.disabled=false; submitBtn.innerHTML="Créer mon compte &#127942;";
             if(e.code==='auth/email-already-in-use') errDiv.textContent='Email déjà utilisé';
             else if(e.code==='auth/weak-password') errDiv.textContent='Mot de passe trop court (min 6)';
             else if(e.code==='auth/invalid-email') errDiv.textContent='Email invalide';
@@ -5498,7 +5491,7 @@ function showLogin(){
             });
           })
           .catch(function(e){
-            submitBtn.disabled=false; submitBtn.innerHTML="Se connecter ⏫";
+            submitBtn.disabled=false; submitBtn.innerHTML="Se connecter &#9193;";
             if(e.code==='auth/user-not-found'||e.code==='auth/wrong-password'||e.code==='auth/invalid-credential')
               errDiv.textContent='Email ou mot de passe incorrect';
             else errDiv.textContent='Erreur: '+e.message;
@@ -5536,19 +5529,13 @@ function launchApp(){
   switchApp(localStorage.getItem('active_app')||'dashboard');
 }
 
-// ── FIREBASE AUTH STATE ──
 document.addEventListener('DOMContentLoaded',function(){
-  // Check Firebase auth state first
   _fbAuth.onAuthStateChanged(function(fbUser){
     if(fbUser){
-      // Firebase user is logged in — load their data then launch
-      var name = fbUser.displayName || fbUser.email.split('@')[0];
-      setAppUser({name:name, email:fbUser.email, uid:fbUser.uid});
-      fbLoadUserData(fbUser.uid).then(function(){
-        launchApp();
-      });
+      var name=fbUser.displayName||fbUser.email.split('@')[0];
+      setAppUser({name:name,email:fbUser.email,uid:fbUser.uid});
+      fbLoadUserData(fbUser.uid).then(function(){ launchApp(); });
     } else {
-      // Not logged in — show login screen
       showLogin();
     }
   });
